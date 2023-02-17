@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:48:19
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 17:03:42
+ * @LastEditTime: 2023-02-18 00:24:19
  * @Description: licat233@gmail.com
  */
 
@@ -90,7 +90,7 @@ func (s *ApiCore) GenerateMultipleFile() error {
 	if err != nil {
 		return err
 	}
-	content, f, err := tools.RTCFile(mainFilname)
+	fileContent, f, err := tools.RTCFile(mainFilname)
 	if err != nil {
 		return err
 	}
@@ -140,9 +140,13 @@ func (s *ApiCore) GenerateMultipleFile() error {
 		s.Reset()
 	}
 
-	s.Imports = imports
-	_conf.FileContent = content
+	if fileContent == "" {
+		fileContent = _service.GenarateDefaultService()
+	}
+
+	_conf.FileContent = fileContent
 	_conf.CurrentIsCoreFile = true
+	s.Imports = imports
 
 	sort.Sort(s.Imports)
 
@@ -167,7 +171,7 @@ func (s *ApiCore) GenerateSingleFile(table, filename string) error {
 	if err != nil {
 		return err
 	}
-	content, f, err := tools.RTCFile(filename)
+	fileContent, f, err := tools.RTCFile(filename)
 	if err != nil {
 		return err
 	}
@@ -178,7 +182,11 @@ func (s *ApiCore) GenerateSingleFile(table, filename string) error {
 		}
 	}(f)
 
-	_conf.FileContent = content
+	if fileContent == "" {
+		fileContent = _service.GenarateDefaultService()
+	}
+
+	_conf.FileContent = fileContent
 
 	dbs, err := common.DbSchema(db.Conn)
 	if nil != err {

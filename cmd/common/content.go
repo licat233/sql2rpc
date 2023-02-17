@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-05 17:14:15
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 23:20:43
+ * @LastEditTime: 2023-02-18 00:31:55
  * @Description: licat233@gmail.com
  */
 package common
@@ -61,7 +61,9 @@ func InsertCustomContent(buf *bytes.Buffer, startMark, endMark, oldContent, inde
 
 	customContent := strings.Join(list, "\n")
 	customContent = strings.Trim(customContent, "\n")
-	customContent = FormatContent(customContent, indent)
+	if indent != "" {
+		customContent = FormatContent(customContent, indent)
+	}
 
 	customContent = fmt.Sprintf("\n%s\n", customContent)
 	startMark = fmt.Sprintf("\n%s%s\n", indent, startMark)
@@ -88,4 +90,13 @@ func PickInfoContent(content string) string {
 	} else {
 		return ""
 	}
+}
+
+// FormatContent 格式化内容
+func FormatContent(str string, indent string) string {
+	s := strings.Split(str, "\n")
+	for i := 0; i < len(s); i++ {
+		s[i] = fmt.Sprintf("%s%s", indent, strings.TrimSpace(s[i]))
+	}
+	return strings.Join(s, "\n")
 }

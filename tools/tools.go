@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-01-14 11:12:42
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 12:26:52
+ * @LastEditTime: 2023-02-17 23:58:55
  * @Description: licat233@gmail.com
  */
 package tools
@@ -90,9 +90,12 @@ func RTCFile(filename string) (content string, f *os.File, err error) {
 
 	//to string
 	content = string(fd)
+	content = strings.TrimSpace(content)
+	content = strings.Trim(content, "\n")
 
 	//读写 | 清空 | 创建
 	f, err = os.OpenFile(filename, os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0766)
+
 	return
 }
 

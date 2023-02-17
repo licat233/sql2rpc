@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:48:19
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 21:48:14
+ * @LastEditTime: 2023-02-18 00:23:47
  * @Description: licat233@gmail.com
  */
 
@@ -88,6 +88,12 @@ func (s *PbCore) Gen() error {
 			err = e
 		}
 	}(f)
+
+	//只在创建的时候才会加入默认service板块
+	if fileContent == "" && config.C.PbMultiple.GetBool() {
+		fileContent = _service.GenarateDefaultService()
+	}
+
 	_conf.FileContent = fileContent
 
 	dbs, err := common.DbSchema(db.Conn)

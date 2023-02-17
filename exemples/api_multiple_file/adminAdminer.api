@@ -110,10 +110,9 @@ type GetAdminerEnumsReq {
   jwt: Auth
   group: adminer
   middleware: AuthMiddleware
-  prefix: api/adminer
+  prefix: /v1/api/admin/adminer
 )
 service admin-api {
-
 
   @doc "添加管理员 基础API"
   @handler AddAdminer
@@ -138,6 +137,7 @@ service admin-api {
   @doc "获取管理员枚举列表 基础API"
   @handler GetAdminerEnums
   get /enums(GetAdminerEnumsReq) returns (BaseResp)
+
 }
 
 
@@ -147,6 +147,14 @@ service admin-api {
 // 此区块内的内容不会被更新
 //[custom service start]
 
+@server(
+  jwt: Auth
+  group: 
+  middleware: AuthMiddleware
+  prefix: /v1/api/admin
+)
+service admin-api {
 
+}
 
 //[custom service end]

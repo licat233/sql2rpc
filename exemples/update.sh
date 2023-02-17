@@ -3,7 +3,7 @@
 # @Author: licat
 # @Date: 2023-01-11 15:40:07
  # @LastEditors: licat
- # @LastEditTime: 2023-02-17 09:53:04
+ # @LastEditTime: 2023-02-18 00:32:32
 # @Description: licat233@gmail.com
 ###
 
@@ -18,6 +18,9 @@ current_path=$(
 cd ${current_path}
 
 chmod +x **/*.sh
+
+rm -f **/*.api
+rm -f **/*.proto
 
 ./build.sh
 ./all_pb_api/gen.sh
