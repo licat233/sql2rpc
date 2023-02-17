@@ -3,7 +3,7 @@
 # @Author: licat
 # @Date: 2023-01-14 15:53:16
  # @LastEditors: licat
- # @LastEditTime: 2023-02-17 10:01:02
+ # @LastEditTime: 2023-02-17 14:51:12
 # @Description: licat233@gmail.com
 ###
 
@@ -23,6 +23,7 @@ if [ -z "$comment" ]; then
     comment="update"
 fi
 
+git tag -a "v1.0.0" -m "$comment"
 git add .
 git commit -m $comment
 git push -u origin main
