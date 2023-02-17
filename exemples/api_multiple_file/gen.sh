@@ -3,7 +3,7 @@
 # @Author: licat
 # @Date: 2023-01-11 15:40:07
  # @LastEditors: licat
- # @LastEditTime: 2023-02-17 17:02:39
+ # @LastEditTime: 2023-02-17 23:21:50
 # @Description: licat233@gmail.com
 ###
 
@@ -21,7 +21,7 @@ if [ ! -f "../sql2rpc" ]; then
     ../build.sh
 fi
 
-rm -f ./*.api
+# rm -f ./*.api
 
 ../sql2rpc -api -db_schema="admin" -db_table="*" -service_name="admin-api" -filename="admin.api" -api_jwt="Auth" -api_middleware="AuthMiddleware" -api_prefix="api" -api_multiple=true
 

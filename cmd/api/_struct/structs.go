@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 09:42:20
+ * @LastEditTime: 2023-02-17 22:39:39
  * @Description: licat233@gmail.com
  */
 
@@ -114,7 +114,7 @@ func (sc StructCollection) String() string {
 }
 
 func (sc StructCollection) insertCustomContent(buf *bytes.Buffer) {
-	err := common.InsertCustomContent(buf, config.CustomStructStartMark, config.CustomStructEndMark, _conf.FileContent, false, false)
+	err := common.InsertCustomContent(buf, config.CustomStructStartMark, config.CustomStructEndMark, _conf.FileContent, "")
 	if err != nil {
 		log.Fatal(err)
 	}

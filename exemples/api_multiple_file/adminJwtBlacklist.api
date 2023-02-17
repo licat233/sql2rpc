@@ -94,6 +94,7 @@ type GetJwtBlacklistEnumsReq {
 )
 service admin-api {
 
+
   @doc "添加jwt黑名单 基础API"
   @handler AddJwtBlacklist
   post /(AddJwtBlacklistReq) returns (BaseResp)
@@ -117,7 +118,6 @@ service admin-api {
   @doc "获取jwt黑名单枚举列表 基础API"
   @handler GetJwtBlacklistEnums
   get /enums(GetJwtBlacklistEnumsReq) returns (BaseResp)
-
 }
 
 

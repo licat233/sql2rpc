@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:34:01
  * @LastEditors: licat
- * @LastEditTime: 2023-02-16 14:26:29
+ * @LastEditTime: 2023-02-17 22:31:47
  * @Description: licat233@gmail.com
  */
 
@@ -13,6 +13,7 @@ import (
 	"fmt"
 
 	"github.com/licat233/sql2rpc/cmd/api/_service/_api"
+	"github.com/licat233/sql2rpc/cmd/common"
 
 	"github.com/licat233/sql2rpc/config"
 	"github.com/licat233/sql2rpc/tools"
@@ -41,13 +42,13 @@ func (sc *ServerConfig) String() string {
 	var buf bytes.Buffer
 	buf.WriteString("@server(\n")
 	if sc.Jwt != "" {
-		buf.WriteString(fmt.Sprintf("  jwt: %s\n", sc.Jwt))
+		buf.WriteString(fmt.Sprintf("%sjwt: %s\n", common.Indent, sc.Jwt))
 	}
-	buf.WriteString(fmt.Sprintf("  group: %s\n", name))
+	buf.WriteString(fmt.Sprintf("%sgroup: %s\n", common.Indent, name))
 	if sc.Middleware != "" {
-		buf.WriteString(fmt.Sprintf("  middleware: %s\n", sc.Middleware))
+		buf.WriteString(fmt.Sprintf("%smiddleware: %s\n", common.Indent, sc.Middleware))
 	}
-	buf.WriteString(fmt.Sprintf("  prefix: %s/%s\n", sc.Prefix, name))
+	buf.WriteString(fmt.Sprintf("%sprefix: %s/%s\n", common.Indent, sc.Prefix, name))
 	buf.WriteString(")\n")
 	return buf.String()
 }

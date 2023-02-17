@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:50:50
  * @LastEditors: licat
- * @LastEditTime: 2023-02-08 13:17:16
+ * @LastEditTime: 2023-02-17 22:40:38
  * @Description: licat233@gmail.com
  */
 package _enum
@@ -48,7 +48,7 @@ func (ec EnumCollection) String() string {
 }
 
 func (ec EnumCollection) insertCustomContent(buf *bytes.Buffer) {
-	err := common.InsertCustomContent(buf, config.CustomEnumStartMark, config.CustomEnumEndMark, _conf.FileContent, false, config.C.PbMultiple.GetBool())
+	err := common.InsertCustomContent(buf, config.CustomEnumStartMark, config.CustomEnumEndMark, _conf.FileContent, "")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-05 17:14:15
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 12:56:13
+ * @LastEditTime: 2023-02-17 23:20:43
  * @Description: licat233@gmail.com
  */
 package common
@@ -13,6 +13,8 @@ import (
 	"regexp"
 	"strings"
 )
+
+var Indent = "  " //two space
 
 func PickMarkContents(startMark, endMark, oldContent string) ([]string, error) {
 	content := strings.TrimSpace(oldContent)
@@ -47,13 +49,10 @@ func PickMarkContents(startMark, endMark, oldContent string) ([]string, error) {
 	return strArr, nil
 }
 
-func InsertCustomContent(buf *bytes.Buffer, startMark, endMark, oldContent string, isService, multiple bool) error {
-	prefix := ""
-	if isService && !multiple {
-		prefix = "  "
-	}
+func InsertCustomContent(buf *bytes.Buffer, startMark, endMark, oldContent, indent string) error {
 
-	buf.WriteString(fmt.Sprintf("\n\n%s// The content in this block will not be updated\n%s// 此区块内的内容不会被更新", prefix, prefix))
+	buf.WriteString(fmt.Sprintf("\n\n%s// The content in this block will not be updated", indent))
+	buf.WriteString(fmt.Sprintf("\n%s// 此区块内的内容不会被更新", indent))
 
 	list, err := PickMarkContents(startMark, endMark, oldContent)
 	if err != nil {
@@ -62,10 +61,11 @@ func InsertCustomContent(buf *bytes.Buffer, startMark, endMark, oldContent strin
 
 	customContent := strings.Join(list, "\n")
 	customContent = strings.Trim(customContent, "\n")
+	customContent = FormatContent(customContent, indent)
 
-	customContent = fmt.Sprintf("\n%s%s\n", prefix, customContent)
-	startMark = fmt.Sprintf("\n%s%s\n", prefix, startMark)
-	endMark = fmt.Sprintf("\n%s%s\n", prefix, endMark)
+	customContent = fmt.Sprintf("\n%s\n", customContent)
+	startMark = fmt.Sprintf("\n%s%s\n", indent, startMark)
+	endMark = fmt.Sprintf("\n%s%s\n", indent, endMark)
 
 	buf.WriteString(startMark)
 	buf.WriteString(customContent)

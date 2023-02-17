@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:32:44
  * @LastEditors: licat
- * @LastEditTime: 2023-02-06 23:16:45
+ * @LastEditTime: 2023-02-17 22:29:37
  * @Description: licat233@gmail.com
  */
 package _field
@@ -11,6 +11,8 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+
+	"github.com/licat233/sql2rpc/cmd/common"
 )
 
 // EnumField represents a field in an enumerated type.
@@ -31,7 +33,7 @@ func NewEnumField(name string, tag int) *EnumField {
 
 // String returns a string representation of an Enum.
 func (ef EnumField) String() string {
-	return fmt.Sprintf("%s = %d;\n", ef.name, ef.tag)
+	return fmt.Sprintf("%s%s = %d;\n", common.Indent, ef.name, ef.tag)
 }
 
 // Name returns the name of the _enum field.

@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-06 00:34:15
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 09:41:31
+ * @LastEditTime: 2023-02-17 22:41:05
  * @Description: licat233@gmail.com
  */
 
@@ -45,7 +45,7 @@ func (sc ServiceCollection) String() string {
 }
 
 func (sc ServiceCollection) insertCustomContent(buf *bytes.Buffer) {
-	err := common.InsertCustomContent(buf, config.CustomServiceStartMark, config.CustomServiceEndMark, _conf.FileContent, false, false)
+	err := common.InsertCustomContent(buf, config.CustomServiceStartMark, config.CustomServiceEndMark, _conf.FileContent, "")
 	if err != nil {
 		log.Fatal(err)
 	}

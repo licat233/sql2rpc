@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-17 12:15:12
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 13:01:50
+ * @LastEditTime: 2023-02-17 22:37:38
  * @Description: licat233@gmail.com
  */
 package _info
@@ -44,7 +44,7 @@ func (info *Info) String() string {
 		buf.WriteString(res)
 	} else {
 		for pair := info.Oldest(); pair != nil; pair = pair.Next() {
-			buf.WriteString(fmt.Sprintf("\n\t%s: \"%v\"", pair.Key, pair.Value))
+			buf.WriteString(fmt.Sprintf("\n%s%s: \"%v\"", common.Indent, pair.Key, pair.Value))
 		}
 	}
 	buf.WriteString("\n)\n")

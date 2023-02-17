@@ -3,7 +3,7 @@
 # @Author: licat
 # @Date: 2023-01-11 15:40:07
  # @LastEditors: licat
- # @LastEditTime: 2023-02-17 17:02:59
+ # @LastEditTime: 2023-02-17 22:59:19
 # @Description: licat233@gmail.com
 ###
 
@@ -21,9 +21,9 @@ if [ ! -f "../sql2rpc" ]; then
     ../build.sh
 fi
 
-rm -f ./*.proto
+# rm -f ./*.proto
 
-../sql2rpc -pb -db_schema="admin" -db_table="*" -service_name="Admin" -filename="admin.proto" -pb_package="admin_proto" -pb_gopackage="./admin_pb" -pb_multiple=true
+../sql2rpc -pb -db_schema="admin" -db_table="*" -service_name="Admin" -filename="admin.proto" -pb_package="admin_proto" -pb_gopackage="./admin_pb" -pb_multiple=false
 
 exit # 如果需要生成gozero框架的服务代码，请注释这行
 

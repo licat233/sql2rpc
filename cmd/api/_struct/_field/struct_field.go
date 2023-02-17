@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:26:33
  * @LastEditors: licat
- * @LastEditTime: 2023-02-08 00:00:17
+ * @LastEditTime: 2023-02-17 22:36:33
  * @Description: licat233@gmail.com
  */
 
@@ -51,5 +51,5 @@ func (f StructField) String() string {
 	}
 	tName := common.ConvertStringStyle(f.TagName)
 	//name 必须camel风格
-	return fmt.Sprintf("  %s %s `%s:\"%s%s\"` //%s\n", tools.ToCamel(f.Name), f.Typ, f.TagType, tName, opt, f.Comment)
+	return fmt.Sprintf("%s%s %s `%s:\"%s%s\"` //%s\n", common.Indent, tools.ToCamel(f.Name), f.Typ, f.TagType, tName, opt, f.Comment)
 }

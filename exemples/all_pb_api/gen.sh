@@ -3,7 +3,7 @@
 # @Author: licat
 # @Date: 2023-01-11 15:40:07
  # @LastEditors: licat
- # @LastEditTime: 2023-02-17 17:02:29
+ # @LastEditTime: 2023-02-17 23:22:06
 # @Description: licat233@gmail.com
 ###
 
@@ -27,8 +27,8 @@ if [ ! -f "./sql2rpcConfig.yaml" ]; then
     cp ../sql2rpcConfig.example.yaml sql2rpcConfig.yaml
 fi
 
-rm -f ./*.api
-rm -f ./*.proto
+# rm -f ./*.api
+# rm -f ./*.proto
 
 # 会根据yaml配置文件来生成服务的配置文件
 echo " - 将优先根据sql2rpcConfig.yaml配置文件内容来生成服务"

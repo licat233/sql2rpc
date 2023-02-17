@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-08 13:17:45
+ * @LastEditTime: 2023-02-17 22:40:09
  * @Description: licat233@gmail.com
  */
 package _message
@@ -94,7 +94,7 @@ func (mc MessageCollection) String() string {
 }
 
 func (mc MessageCollection) insertCustomContent(buf *bytes.Buffer) {
-	err := common.InsertCustomContent(buf, config.CustomMessageStartMark, config.CustomMessageEndMark, _conf.FileContent, false, config.C.PbMultiple.GetBool())
+	err := common.InsertCustomContent(buf, config.CustomMessageStartMark, config.CustomMessageEndMark, _conf.FileContent, "")
 	if err != nil {
 		log.Fatal(err)
 	}

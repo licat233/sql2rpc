@@ -114,6 +114,7 @@ type GetAdminerEnumsReq {
 )
 service admin-api {
 
+
   @doc "添加管理员 基础API"
   @handler AddAdminer
   post /(AddAdminerReq) returns (BaseResp)
@@ -137,7 +138,6 @@ service admin-api {
   @doc "获取管理员枚举列表 基础API"
   @handler GetAdminerEnums
   get /enums(GetAdminerEnumsReq) returns (BaseResp)
-
 }
 
 

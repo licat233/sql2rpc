@@ -3,7 +3,7 @@
 # @Author: licat
 # @Date: 2023-01-11 15:40:07
  # @LastEditors: licat
- # @LastEditTime: 2023-02-17 17:02:53
+ # @LastEditTime: 2023-02-17 23:00:24
 # @Description: licat233@gmail.com
 ###
 
@@ -17,13 +17,11 @@ current_path=$(
 
 cd $current_path
 
-../build.sh
-
 if [ ! -f "../sql2rpc" ]; then
     ../build.sh
 fi
 
-rm -f ./*.proto
+# rm -f ./*.proto
 
 ../sql2rpc -pb -db_schema="admin" -db_table="*" -service_name="Admin" -filename="admin.proto" -pb_package="admin_proto" -pb_gopackage="./admin_pb" -pb_multiple=true
 

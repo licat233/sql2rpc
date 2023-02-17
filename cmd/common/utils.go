@@ -1,6 +1,9 @@
 package common
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/licat233/sql2rpc/config"
 	"github.com/licat233/sql2rpc/tools"
 )
@@ -17,4 +20,13 @@ func ConvertStringStyle(s string) string {
 	default:
 		return tools.ToSnake(s)
 	}
+}
+
+// FormatContent 格式化内容
+func FormatContent(str string, indent string) string {
+	s := strings.Split(str, "\n")
+	for i := 0; i < len(s); i++ {
+		s[i] = fmt.Sprintf("%s%s", indent, strings.TrimSpace(s[i]))
+	}
+	return strings.Join(s, "\n")
 }

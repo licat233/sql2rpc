@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:26:33
  * @LastEditors: licat
- * @LastEditTime: 2023-02-08 11:28:08
+ * @LastEditTime: 2023-02-17 22:28:47
  * @Description: licat233@gmail.com
  */
 package _field
@@ -10,6 +10,7 @@ package _field
 import (
 	"fmt"
 
+	"github.com/licat233/sql2rpc/cmd/common"
 	"github.com/licat233/sql2rpc/tools"
 )
 
@@ -34,5 +35,5 @@ func NewMessageField(typ, name string, tag int, comment string) *MessageField {
 // String returns a string representation of a _message field.
 func (f MessageField) String() string {
 	// matched, _ := regexp.MatchString("^repeated\\s[A-Z].*", f.Typ)
-	return fmt.Sprintf("  %s %s = %d; //%s\n", f.Typ, tools.ToSnake(f.Name), f.Tag, f.Comment)
+	return fmt.Sprintf("%s%s %s = %d; //%s\n", common.Indent, f.Typ, tools.ToSnake(f.Name), f.Tag, f.Comment)
 }

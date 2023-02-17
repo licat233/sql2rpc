@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-08 12:36:15
  * @LastEditors: licat
- * @LastEditTime: 2023-02-09 13:54:44
+ * @LastEditTime: 2023-02-17 22:40:21
  * @Description: licat233@gmail.com
  */
 
@@ -56,7 +56,7 @@ func (ic ImpCollection) String() string {
 }
 
 func (ic ImpCollection) insertCustomContent(buf *bytes.Buffer) {
-	err := common.InsertCustomContent(buf, config.CustomImportStartMark, config.CustomImportEndMark, _conf.FileContent, false, config.C.PbMultiple.GetBool())
+	err := common.InsertCustomContent(buf, config.CustomImportStartMark, config.CustomImportEndMark, _conf.FileContent, "")
 	if err != nil {
 		log.Fatal(err)
 	}
