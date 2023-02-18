@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-18 10:01:53
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 13:39:33
+ * @LastEditTime: 2023-02-18 20:11:51
  * @Description: licat233@gmail.com
  */
 
@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"strings"
 
 	"github.com/licat233/sql2rpc/cmd/common"
 	"github.com/licat233/sql2rpc/tools"
@@ -51,7 +52,7 @@ func (sc *Server) String() string {
 		buf.WriteString(fmt.Sprintf("\n%sgroup: %s", common.Indent, name))
 	}
 	if sc.Middleware != "" {
-		buf.WriteString(fmt.Sprintf("\n%smiddleware: %s", common.Indent, sc.Middleware))
+		buf.WriteString(fmt.Sprintf("\n%smiddleware: %s", common.Indent, toCamelHandler(sc.Middleware)))
 	}
 
 	if prefixValue != "" {
@@ -59,4 +60,15 @@ func (sc *Server) String() string {
 	}
 	buf.WriteString("\n)\n")
 	return buf.String()
+}
+
+func toCamelHandler(value string) string {
+	if value == "" {
+		return ""
+	}
+	list := strings.Split(value, ",")
+	for i, v := range list {
+		list[i] = tools.ToCamel(v)
+	}
+	return strings.Join(list, ",")
 }
