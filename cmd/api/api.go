@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:48:19
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 13:26:46
+ * @LastEditTime: 2023-02-18 18:31:48
  * @Description: licat233@gmail.com
  */
 
@@ -125,12 +125,11 @@ func (s *ApiCore) GenerateMultipleFile() error {
 		ignoreTables[ig] = true
 	}
 
-	schema := config.C.DBSchema.GetString()
 	for _, table := range tables {
 		if _, ok := ignoreTables[table]; ok {
 			continue
 		}
-		filename := fmt.Sprintf("%s.api", tools.ToLowerCamel(fmt.Sprintf("%s_%s", schema, table)))
+		filename := fmt.Sprintf("%s.api", tools.ToLowerCamel(fmt.Sprintf("%s_%s", mainFilname, table)))
 		if filename == mainFilname {
 			oldFileName := mainFilname
 			mainFilname = tools.FileRename(mainFilname, fmt.Sprintf("%s_%s", tools.GetFilename(mainFilname), "core"))
