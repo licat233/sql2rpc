@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 22:39:39
+ * @LastEditTime: 2023-02-18 15:47:51
  * @Description: licat233@gmail.com
  */
 
@@ -54,18 +54,18 @@ var baseStructCollection StructCollection = []*Struct{
 	New("NilResp", "json", "空响应", nil),
 	New("BaseResp", "json", "规范响应体", _field.StructFieldCollection{
 		_field.New("Status", "bool", "json", "success", "", "响应状态"),
-		_field.New("Message", "string", "json", "_message", "optional", "给予的提示信息"),
-		_field.New("Data", "interface{}", "json", "data", "optional", "【选填】响应的业务数据"),
-		_field.New("Total", "int64", "json", "total", "optional", "【选填】数据总个数"),
-		_field.New("PageSize", "int64", "json", "pageSize", "optional", "【选填】单页数量"),
-		_field.New("Page", "int64", "json", "current", "optional", "【选填】当前页码，current与antd前端对接"),
-		_field.New("TotalPage", "int64", "json", "totalPage", "optional", "【选填】自增项，总共有多少页，根据前端的pageSize来计算"),
-		_field.New("ErrorCode", "int64", "json", "errorCode", "optional", "【选填】错误类型代码：400错误请求，401未授权，500服务器内部错误，200成功"),
-		_field.New("ErrorMessage", "string", "json", "errorMessage", "optional", "【选填】向用户显示消息"),
-		_field.New("TraceMessage", "string", "json", "traceMessage", "optional", "【选填】调试错误信息，请勿在生产环境下使用，可有可无"),
-		_field.New("ShowStruct", "int64", "json", "showStruct", "optional", "【选填】错误显示类型：0.不提示错误;1.警告信息提示；2.错误信息提示；4.通知提示；9.页面跳转"),
-		_field.New("TraceId", "string", "json", "traceId", "optional", "【选填】方便后端故障排除：唯一的请求ID"),
-		_field.New("Host", "string", "json", "host", "optional", "【选填】方便后端故障排除：当前访问服务器的主机"),
+		_field.New("Message", "string", "json", "_message", "optional,omitempty", "给予的提示信息"),
+		_field.New("Data", "interface{}", "json", "data", "optional,omitempty", "【选填】响应的业务数据"),
+		_field.New("Total", "int64", "json", "total", "optional,omitempty", "【选填】数据总个数"),
+		_field.New("PageSize", "int64", "json", "pageSize,omitempty", "optional", "【选填】单页数量"),
+		_field.New("Page", "int64", "json", "current", "optional,omitempty", "【选填】当前页码，current与antd前端对接"),
+		_field.New("TotalPage", "int64", "json", "totalPage", "optional,omitempty", "【选填】自增项，总共有多少页，根据前端的pageSize来计算"),
+		_field.New("ErrorCode", "int64", "json", "errorCode", "optional,omitempty", "【选填】错误类型代码：400错误请求，401未授权，500服务器内部错误，200成功"),
+		_field.New("ErrorMessage", "string", "json", "errorMessage", "optional,omitempty", "【选填】向用户显示消息"),
+		_field.New("TraceMessage", "string", "json", "traceMessage", "optional,omitempty", "【选填】调试错误信息，请勿在生产环境下使用，可有可无"),
+		_field.New("ShowStruct", "int64", "json", "showStruct", "optional,omitempty", "【选填】错误显示类型：0.不提示错误;1.警告信息提示；2.错误信息提示；4.通知提示；9.页面跳转"),
+		_field.New("TraceId", "string", "json", "traceId", "optional,omitempty", "【选填】方便后端故障排除：唯一的请求ID"),
+		_field.New("Host", "string", "json", "host", "optional,omitempty", "【选填】方便后端故障排除：当前访问服务器的主机"),
 	}),
 }
 
