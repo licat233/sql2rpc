@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 15:47:51
+ * @LastEditTime: 2023-02-18 18:11:19
  * @Description: licat233@gmail.com
  */
 
@@ -52,6 +52,9 @@ var baseStructCollection StructCollection = []*Struct{
 	}),
 	New("NilReq", "json", "空请求", nil),
 	New("NilResp", "json", "空响应", nil),
+	New("Resp", "json", "空响应", _field.StructFieldCollection{
+		_field.New("Body", "interface{}", "json", "body", "", "响应数据"),
+	}),
 	New("BaseResp", "json", "规范响应体", _field.StructFieldCollection{
 		_field.New("Status", "bool", "json", "success", "", "响应状态"),
 		_field.New("Message", "string", "json", "_message", "optional,omitempty", "给予的提示信息"),
