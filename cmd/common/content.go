@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-05 17:14:15
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 13:43:52
+ * @LastEditTime: 2023-02-18 14:55:25
  * @Description: licat233@gmail.com
  */
 package common
@@ -111,7 +111,6 @@ func FormatContent(str string) string {
 		newLines = append(newLines, line)
 	}
 
-	var needIndentNum int
 	var IndentMul = func(num int) string {
 		res := ""
 		for i := 0; i < num; i++ {
@@ -120,19 +119,20 @@ func FormatContent(str string) string {
 		return res
 	}
 
+	var needIndentNum int
 	// 处理{}内的缩进
 	for index, line := range newLines {
 		if len(line) == 0 {
 			continue
 		}
-		endFlag := line[len(line)-1]
-		startFlag := line[0]
-		if endFlag == '{' {
-			needIndentNum += 1
+		if line[len(line)-1] == '{' {
+			needIndentNum++
 			continue
 		}
-		if startFlag == '}' {
-			needIndentNum -= 1
+		if strings.TrimSpace(line)[0] == '}' {
+			if needIndentNum > 0 {
+				needIndentNum--
+			}
 			continue
 		}
 		if needIndentNum > 0 {
@@ -147,19 +147,20 @@ func FormatContent(str string) string {
 		if len(line) == 0 {
 			continue
 		}
-		endFlag := line[len(line)-1]
-		startFlag := line[0]
-		if endFlag == '(' {
-			needIndentNum += 1
+		if line[len(line)-1] == '(' {
+			needIndentNum++
 			continue
 		}
-		if startFlag == ')' {
-			needIndentNum -= 1
+		if strings.TrimSpace(line)[0] == ')' {
+			if needIndentNum > 0 {
+				needIndentNum--
+			}
 			continue
 		}
 		if needIndentNum > 0 {
 			line = IndentMul(needIndentNum) + line
 		}
+
 		newLines[index] = line
 	}
 
