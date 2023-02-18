@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-07 13:40:54
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 16:11:35
+ * @LastEditTime: 2023-02-18 17:46:20
  * @Description: licat233@gmail.com
  */
 
@@ -10,7 +10,7 @@ package config
 
 const (
 	// CurrentVersion 当前项目版本
-	CurrentVersion = "v1.2.5"
+	CurrentVersion = "v1.2.6"
 
 	// ProjectName 当前项目名称
 	ProjectName = "sql2rpc"

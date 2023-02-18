@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-07 22:35:57
  * @LastEditors: licat
- * @LastEditTime: 2023-02-09 14:08:35
+ * @LastEditTime: 2023-02-18 17:43:46
  * @Description: licat233@gmail.com
  */
 
@@ -16,8 +16,8 @@ var (
 
 	FileContent string //文件内容
 
-	MoreIgnoreTables  = []string{} //当前服务可能忽略的表
-	MoreIgnoreColumns = []string{} //某个结构可能忽略的列
+	MoreIgnoreTables  = []string{}             //当前服务可能忽略的表
+	MoreIgnoreColumns = []string{"id", "uuid"} //某个结构可能忽略的列
 
 	IgnoreTables  = []string{} //当前解析需要忽略的表
 	IgnoreColumns = []string{} //每个结构体需要忽略的列
