@@ -2,15 +2,11 @@ syntax = "v1"
 
 // ------------------------------------ Import Start ------------------------------------
 
-
 // The content in this block will not be updated
 // 此区块内的内容不会被更新
 //[custom import start]
 
-
-
 //[custom import end]
-
 
 // ------------------------------------ Struct Start ------------------------------------
 
@@ -72,20 +68,15 @@ type GetJwtBlacklistEnumsReq {
   ParentId int64 `form:"parent_id,optional,default=-1"` //父级ID
 }
 
-
 // The content in this block will not be updated
 // 此区块内的内容不会被更新
 //[custom struct start]
 
-
-
 //[custom struct end]
-
-
 
 // ------------------------------------ Service Start ------------------------------------
 
-// jwt黑名单 
+// jwt黑名单
 @server(
   jwt: Auth
   group: jwtBlacklist
@@ -120,16 +111,12 @@ service admin-api {
 
 }
 
-
-
-
 // The content in this block will not be updated
 // 此区块内的内容不会被更新
 //[custom service start]
 
 @server(
   jwt: Auth
-  group: 
   middleware: AuthMiddleware
   prefix: /v1/api/admin
 )

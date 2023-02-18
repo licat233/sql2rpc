@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:48:19
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 00:23:47
+ * @LastEditTime: 2023-02-18 12:30:41
  * @Description: licat233@gmail.com
  */
 
@@ -91,7 +91,7 @@ func (s *PbCore) Gen() error {
 
 	//只在创建的时候才会加入默认service板块
 	if fileContent == "" && config.C.PbMultiple.GetBool() {
-		fileContent = _service.GenarateDefaultService()
+		fileContent = _service.GenarateDefaultCustomService()
 	}
 
 	_conf.FileContent = fileContent
@@ -175,7 +175,9 @@ func (s *PbCore) String() string {
 	buf.WriteString(fmt.Sprint(s.Services))
 	// service end
 
-	return buf.String()
+	content := common.FormatContent(buf.String())
+
+	return content
 }
 
 // typesFromColumns creates the appropriate schema properties from a collection of column types.
@@ -218,7 +220,7 @@ func (s *PbCore) typesFromColumns(cols []*common.Column, ignoreTables, ignoreCol
 
 	for _, v := range messageMap {
 		s.Messages = append(s.Messages, v)
-		s.Services = append(s.Services, _service.NewService(v.Name, v.Comment))
+		s.Services = append(s.Services, _service.New(v.Name, v.Comment))
 	}
 
 	return nil
@@ -269,7 +271,7 @@ func (s *PbCore) parseColumn(msg *_message.Message, col *common.Column) error {
 		return fmt.Errorf("no compatible protobuf type found for `%s`. column: `%s`.`%s`", col.DataType, col.TableName, col.ColumnName)
 	}
 
-	field := _field.NewMessageField(fieldType, col.ColumnName, len(msg.Fields)+1, col.ColumnComment)
+	field := _field.New(fieldType, col.ColumnName, len(msg.Fields)+1, col.ColumnComment)
 
 	err := msg.AppendField(field)
 	if nil != err {

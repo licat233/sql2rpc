@@ -3,7 +3,7 @@
 # @Author: licat
 # @Date: 2023-01-11 15:40:07
  # @LastEditors: licat
- # @LastEditTime: 2023-02-18 00:06:48
+ # @LastEditTime: 2023-02-18 12:47:42
 # @Description: licat233@gmail.com
 ###
 
@@ -21,6 +21,7 @@ if [ ! -f "../sql2rpc" ]; then
     ../build.sh
 fi
 
+# ../build.sh
 # rm -f ./*.proto
 
 ../sql2rpc -pb -db_schema="admin" -db_table="*" -service_name="Admin" -filename="admin.proto" -pb_package="admin_proto" -pb_gopackage="./admin_pb" -pb_multiple=true

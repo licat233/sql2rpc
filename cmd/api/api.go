@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:48:19
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 00:24:19
+ * @LastEditTime: 2023-02-18 13:26:46
  * @Description: licat233@gmail.com
  */
 
@@ -101,6 +101,10 @@ func (s *ApiCore) GenerateMultipleFile() error {
 		}
 	}(f)
 
+	if fileContent == "" {
+		fileContent = _service.GenarateDefaultCustomService()
+	}
+
 	tableStr := config.C.DBTable.GetString()
 	imports := _import.ImpCollection{}
 	var tables []string
@@ -138,10 +142,6 @@ func (s *ApiCore) GenerateMultipleFile() error {
 			return err
 		}
 		s.Reset()
-	}
-
-	if fileContent == "" {
-		fileContent = _service.GenarateDefaultService()
 	}
 
 	_conf.FileContent = fileContent
@@ -183,7 +183,7 @@ func (s *ApiCore) GenerateSingleFile(table, filename string) error {
 	}(f)
 
 	if fileContent == "" {
-		fileContent = _service.GenarateDefaultService()
+		fileContent = _service.GenarateDefaultCustomService()
 	}
 
 	_conf.FileContent = fileContent
@@ -237,7 +237,7 @@ func (s *ApiCore) AppendImport(imports string) {
 func (s *ApiCore) String() string {
 	buf := new(bytes.Buffer)
 	// header start
-	buf.WriteString("syntax = \"v1\"")
+	buf.WriteString("syntax = \"v1\"\n")
 	// header end
 
 	// info start
@@ -258,7 +258,9 @@ func (s *ApiCore) String() string {
 	buf.WriteString(fmt.Sprint(s.Services))
 	// service end
 
-	return buf.String()
+	content := common.FormatContent(buf.String())
+
+	return content
 }
 
 // typesFromColumns creates the appropriate schema properties from a collection of column types.
@@ -285,7 +287,7 @@ func (s *ApiCore) typesFromColumns(cols []*common.Column, ignoreTables, ignoreCo
 
 		stt, ok := structMap[structName]
 		if !ok {
-			structMap[structName] = _struct.NewStruct(structName, "json", c.TableComment, nil)
+			structMap[structName] = _struct.New(structName, "json", c.TableComment, nil)
 			stt = structMap[structName]
 		}
 
@@ -299,7 +301,7 @@ func (s *ApiCore) typesFromColumns(cols []*common.Column, ignoreTables, ignoreCo
 	s.Services = _service.ServiceCollection{}
 	for _, v := range structMap {
 		s.Structs = append(s.Structs, v)
-		svr := _service.NewService(v.Name, v.Comment)
+		svr := _service.New(v.Name, v.Comment)
 		s.Services = append(s.Services, svr)
 	}
 
@@ -333,7 +335,7 @@ func (s *ApiCore) parseColumn(stt *_struct.Struct, col *common.Column) error {
 		return fmt.Errorf("no compatible golang type found for `%s`. column: `%s`.`%s`", col.DataType, col.TableName, col.ColumnName)
 	}
 
-	sf := _field.NewStructField(col.ColumnName, fieldType, "json", col.ColumnName, "", col.ColumnComment)
+	sf := _field.New(col.ColumnName, fieldType, "json", col.ColumnName, "", col.ColumnComment)
 
 	stt.Fields = append(stt.Fields, sf)
 

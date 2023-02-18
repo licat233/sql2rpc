@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:25:08
  * @LastEditors: licat
- * @LastEditTime: 2023-02-08 13:17:36
+ * @LastEditTime: 2023-02-18 09:42:05
  * @Description: licat233@gmail.com
  */
 package _message
@@ -24,7 +24,7 @@ type Message struct {
 	Fields  _field.MessageFieldCollection
 }
 
-func NewMessage(name, comment string, fields _field.MessageFieldCollection) *Message {
+func New(name, comment string, fields _field.MessageFieldCollection) *Message {
 	return &Message{
 		Name:    name,
 		Comment: comment,
@@ -78,7 +78,7 @@ func (ms *Message) GenRpcAddReqRespMessage(buf *bytes.Buffer) {
 	resp.Name = "Add" + tools.ToCamel(ms.Name) + "Resp"
 	resp.Comment = "添加" + ms.Comment + "响应"
 	resp.Fields = []*_field.MessageField{
-		_field.NewMessageField(tools.ToCamel(ms.Name), ms.Name, 1, ms.Comment+"信息"),
+		_field.New(tools.ToCamel(ms.Name), ms.Name, 1, ms.Comment+"信息"),
 	}
 	buf.WriteString(fmt.Sprintf("%s\n", resp))
 	resp = nil
@@ -110,7 +110,7 @@ func (ms *Message) GenRpcDelReqRespMessage(buf *bytes.Buffer) {
 	req.Name = "Del" + tools.ToCamel(ms.Name) + "Req"
 	req.Comment = "删除" + ms.Comment + "请求"
 	req.Fields = []*_field.MessageField{
-		_field.NewMessageField("int64", "id", 1, ms.Comment+" ID"),
+		_field.New("int64", "id", 1, ms.Comment+" ID"),
 	}
 	buf.WriteString(fmt.Sprintf("%s\n", req))
 	req = nil
@@ -131,7 +131,7 @@ func (ms *Message) GenRpcGetReqRespMessage(buf *bytes.Buffer) {
 	req.Name = "Get" + tools.ToCamel(ms.Name) + "Req"
 	req.Comment = "获取" + ms.Comment + "请求"
 	req.Fields = []*_field.MessageField{
-		_field.NewMessageField("int64", "id", 1, ms.Comment+" ID"),
+		_field.New("int64", "id", 1, ms.Comment+" ID"),
 	}
 	buf.WriteString(fmt.Sprintf("%s\n", req))
 	req = nil
@@ -141,7 +141,7 @@ func (ms *Message) GenRpcGetReqRespMessage(buf *bytes.Buffer) {
 	resp.Name = "Get" + tools.ToCamel(ms.Name) + "Resp"
 	resp.Comment = "获取" + ms.Comment + "响应"
 	resp.Fields = []*_field.MessageField{
-		_field.NewMessageField(tools.ToCamel(ms.Name), ms.Name, 1, ms.Comment+" 信息"),
+		_field.New(tools.ToCamel(ms.Name), ms.Name, 1, ms.Comment+" 信息"),
 	}
 	buf.WriteString(fmt.Sprintf("%s\n", resp))
 	resp = nil
@@ -154,8 +154,8 @@ func (ms *Message) GenRpcGetListReqRespMessage(buf *bytes.Buffer) {
 	req.Name = "Get" + tools.ToCamel(ms.Name) + "ListReq"
 	req.Comment = "获取" + ms.Comment + "列表请求"
 	req.Fields = []*_field.MessageField{
-		_field.NewMessageField("ListReq", "list_req", 1, "列表页码参数"),
-		_field.NewMessageField(tools.ToCamel(ms.Name), ms.Name, 2, ms.Comment+"参数"),
+		_field.New("ListReq", "list_req", 1, "列表页码参数"),
+		_field.New(tools.ToCamel(ms.Name), ms.Name, 2, ms.Comment+"参数"),
 	}
 	buf.WriteString(fmt.Sprintf("%s\n", req))
 	req = nil
@@ -165,8 +165,8 @@ func (ms *Message) GenRpcGetListReqRespMessage(buf *bytes.Buffer) {
 	resp.Name = "Get" + tools.ToCamel(ms.Name) + "ListResp"
 	resp.Comment = "获取" + ms.Comment + "列表响应"
 	resp.Fields = []*_field.MessageField{
-		_field.NewMessageField("repeated "+tools.ToCamel(ms.Name), tools.PluralizedName(ms.Name), 1, ms.Comment+"列表"),
-		_field.NewMessageField("int64", "total", 2, ms.Comment+"总数量"),
+		_field.New("repeated "+tools.ToCamel(ms.Name), tools.PluralizedName(ms.Name), 1, ms.Comment+"列表"),
+		_field.New("int64", "total", 2, ms.Comment+"总数量"),
 	}
 	buf.WriteString(fmt.Sprintf("%s\n", resp))
 	resp = nil
@@ -179,7 +179,7 @@ func (ms *Message) GenRpcGetEnumsReqRespMessage(buf *bytes.Buffer) {
 	req.Name = "Get" + tools.ToCamel(ms.Name) + "EnumsReq"
 	req.Comment = "获取" + ms.Comment + "列表请求"
 	req.Fields = []*_field.MessageField{
-		_field.NewMessageField("int64", "parent_id", 1, "父级ID"),
+		_field.New("int64", "parent_id", 1, "父级ID"),
 	}
 	buf.WriteString(fmt.Sprintf("%s\n", req))
 	req = nil

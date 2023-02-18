@@ -23,41 +23,41 @@ import (
 type MessageCollection []*Message
 
 var baseMessageCollection MessageCollection = []*Message{
-	NewMessage("Enum", "枚举", _field.MessageFieldCollection{
-		_field.NewMessageField("string", "label", 1, "标签"),
-		_field.NewMessageField("int64", "value", 2, "值"),
+	New("Enum", "枚举", _field.MessageFieldCollection{
+		_field.New("string", "label", 1, "标签"),
+		_field.New("int64", "value", 2, "值"),
 	}),
-	NewMessage("Enums", "枚举列表", _field.MessageFieldCollection{
-		_field.NewMessageField("repeated Enum", "list", 1, "枚举列表数据"),
+	New("Enums", "枚举列表", _field.MessageFieldCollection{
+		_field.New("repeated Enum", "list", 1, "枚举列表数据"),
 	}),
-	NewMessage("Option", "选项", _field.MessageFieldCollection{
-		_field.NewMessageField("string", "title", 1, "标题"),
-		_field.NewMessageField("int64", "value", 2, "值"),
+	New("Option", "选项", _field.MessageFieldCollection{
+		_field.New("string", "title", 1, "标题"),
+		_field.New("int64", "value", 2, "值"),
 	}),
-	NewMessage("Options", "选项列表", _field.MessageFieldCollection{
-		_field.NewMessageField("repeated Option", "list", 1, "选项列表数据"),
+	New("Options", "选项列表", _field.MessageFieldCollection{
+		_field.New("repeated Option", "list", 1, "选项列表数据"),
 	}),
-	NewMessage("TreeOption", "树形选项", _field.MessageFieldCollection{
-		_field.NewMessageField("string", "title", 1, "标题"),
-		_field.NewMessageField("int64", "value", 2, "值"),
-		_field.NewMessageField("repeated TreeOption", "children", 3, "子集"),
+	New("TreeOption", "树形选项", _field.MessageFieldCollection{
+		_field.New("string", "title", 1, "标题"),
+		_field.New("int64", "value", 2, "值"),
+		_field.New("repeated TreeOption", "children", 3, "子集"),
 	}),
-	NewMessage("TreeOptions", "树形选项列表", _field.MessageFieldCollection{
-		_field.NewMessageField("repeated TreeOption", "list", 1, "树形选项列表数据"),
+	New("TreeOptions", "树形选项列表", _field.MessageFieldCollection{
+		_field.New("repeated TreeOption", "list", 1, "树形选项列表数据"),
 	}),
-	NewMessage("StatusResp", "状态响应", _field.MessageFieldCollection{
-		_field.NewMessageField("bool", "status", 1, "状态"),
+	New("StatusResp", "状态响应", _field.MessageFieldCollection{
+		_field.New("bool", "status", 1, "状态"),
 	}),
-	NewMessage("ListReq", "列表数据请求", _field.MessageFieldCollection{
-		_field.NewMessageField("int64", "page_size", 1, "页容量"),
-		_field.NewMessageField("int64", "page", 2, "页码"),
-		_field.NewMessageField("string", "keyword", 3, "关键词"),
+	New("ListReq", "列表数据请求", _field.MessageFieldCollection{
+		_field.New("int64", "page_size", 1, "页容量"),
+		_field.New("int64", "page", 2, "页码"),
+		_field.New("string", "keyword", 3, "关键词"),
 	}),
-	NewMessage("ByIdReq", "通过ID请求", _field.MessageFieldCollection{
-		_field.NewMessageField("int64", "id", 1, "主键"),
+	New("ByIdReq", "通过ID请求", _field.MessageFieldCollection{
+		_field.New("int64", "id", 1, "主键"),
 	}),
-	NewMessage("NilReq", "空请求", nil),
-	NewMessage("NilResp", "空响应", nil),
+	New("NilReq", "空请求", nil),
+	New("NilResp", "空响应", nil),
 }
 
 func (mc MessageCollection) Len() int {

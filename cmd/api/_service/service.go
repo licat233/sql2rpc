@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:34:01
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 00:27:17
+ * @LastEditTime: 2023-02-18 13:24:47
  * @Description: licat233@gmail.com
  */
 
@@ -13,63 +13,25 @@ import (
 	"fmt"
 
 	"github.com/licat233/sql2rpc/cmd/api/_service/_api"
-	"github.com/licat233/sql2rpc/cmd/common"
+	"github.com/licat233/sql2rpc/cmd/api/_service/_server"
 
 	"github.com/licat233/sql2rpc/config"
 	"github.com/licat233/sql2rpc/tools"
 )
 
-type ServerConfig struct {
-	Name       string
-	Jwt        string
-	Group      string
-	Middleware string
-	Prefix     string
-}
-
-func NewServerConfig(name, jwt, group, middleware, prefix string) *ServerConfig {
-	return &ServerConfig{
-		Name:       name,
-		Jwt:        jwt,
-		Group:      group,
-		Middleware: middleware,
-		Prefix:     prefix,
-	}
-}
-
-func (sc *ServerConfig) String() string {
-	name := tools.ToLowerCamel(sc.Name)
-	var buf bytes.Buffer
-	buf.WriteString("@server(\n")
-	if sc.Jwt != "" {
-		buf.WriteString(fmt.Sprintf("%sjwt: %s\n", common.Indent, sc.Jwt))
-	}
-	buf.WriteString(fmt.Sprintf("%sgroup: %s\n", common.Indent, name))
-	if sc.Middleware != "" {
-		buf.WriteString(fmt.Sprintf("%smiddleware: %s\n", common.Indent, sc.Middleware))
-	}
-	if name == "" {
-		buf.WriteString(fmt.Sprintf("%sprefix: %s\n", common.Indent, sc.Prefix))
-	} else {
-		buf.WriteString(fmt.Sprintf("%sprefix: %s/%s\n", common.Indent, sc.Prefix, name))
-	}
-	buf.WriteString(")\n")
-	return buf.String()
-}
-
 type Service struct {
 	Name    string
 	Comment string
 	Apis    _api.ApiCollection
-	Config  *ServerConfig
+	Server  *_server.Server
 }
 
-func NewService(name, comment string) *Service {
+func New(name, comment string) *Service {
 	s := &Service{
 		Name:    name,
 		Comment: comment,
 		Apis:    _api.ApiCollection{},
-		Config:  NewServerConfig(name, config.C.ApiJwt.GetString(), name, config.C.ApiMiddleware.GetString(), config.C.ApiPrefix.GetString()),
+		Server:  _server.NewServer(name, config.C.ApiJwt.GetString(), name, config.C.ApiMiddleware.GetString(), config.C.ApiPrefix.GetString()),
 	}
 	s.initBaseApiServiceItems()
 	return s
@@ -77,8 +39,10 @@ func NewService(name, comment string) *Service {
 
 func (s *Service) String() string {
 	buf := new(bytes.Buffer)
-	buf.WriteString(fmt.Sprintf("\n// %s \n", s.Comment))
-	buf.WriteString(fmt.Sprint(s.Config))
+	if s.Comment != "" {
+		buf.WriteString(fmt.Sprintf("\n// %s \n", s.Comment))
+	}
+	buf.WriteString(fmt.Sprint(s.Server))
 	buf.WriteString(fmt.Sprintf("service %s {\n", config.C.ServiceName.GetString()))
 	buf.WriteString(fmt.Sprint(s.Apis))
 	buf.WriteString("\n}\n\n")
@@ -97,15 +61,13 @@ func (s *Service) initBaseApiServiceItems() {
 	}
 }
 
-func GenarateDefaultService() string {
-	svcConfig := NewServerConfig("", config.C.ApiJwt.GetString(), "", config.C.ApiMiddleware.GetString(), config.C.ApiPrefix.GetString())
-	startMark := fmt.Sprintf("\n%s\n", config.CustomServiceStartMark)
-	endMark := fmt.Sprintf("\n%s\n", config.CustomServiceEndMark)
+func GenarateDefaultCustomService() string {
+	defSrv := New("", "")
+	defSrv.Apis = nil
 	buf := new(bytes.Buffer)
-	buf.WriteString(startMark)
-	buf.WriteString(svcConfig.String())
-	buf.WriteString(fmt.Sprintf("service %s {\n", config.C.ServiceName.GetString()))
-	buf.WriteString("\n}\n")
-	buf.WriteString(endMark)
+	buf.WriteString(fmt.Sprintf("\n%s\n", config.CustomServiceStartMark))
+	buf.WriteString(fmt.Sprint(defSrv))
+	buf.WriteString(fmt.Sprintf("\n%s\n", config.CustomServiceEndMark))
+
 	return buf.String()
 }

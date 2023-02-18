@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:26:33
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 22:28:47
+ * @LastEditTime: 2023-02-18 09:42:20
  * @Description: licat233@gmail.com
  */
 package _field
@@ -22,8 +22,8 @@ type MessageField struct {
 	Comment string
 }
 
-// NewMessageField creates a new _message field.
-func NewMessageField(typ, name string, tag int, comment string) *MessageField {
+// New creates a new _message field.
+func New(typ, name string, tag int, comment string) *MessageField {
 	return &MessageField{
 		Typ:     typ,
 		Name:    name,

@@ -36,7 +36,7 @@ func (mfc MessageFieldCollection) Copy() MessageFieldCollection {
 func ListRespFields(dataType string) MessageFieldCollection {
 	name := tools.PluralizedName(dataType)
 	return MessageFieldCollection{
-		NewMessageField("repeated "+dataType, name, 1, "数据列表"),
-		NewMessageField("int64", "total", 2, "总数量"),
+		New("repeated "+dataType, name, 1, "数据列表"),
+		New("int64", "total", 2, "总数量"),
 	}
 }

@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:25:08
  * @LastEditors: licat
- * @LastEditTime: 2023-02-08 09:36:39
+ * @LastEditTime: 2023-02-18 09:45:08
  * @Description: licat233@gmail.com
  */
 package _struct
@@ -10,9 +10,10 @@ package _struct
 import (
 	"bytes"
 	"fmt"
+	"strings"
+
 	"github.com/licat233/sql2rpc/cmd/api/_conf"
 	"github.com/licat233/sql2rpc/cmd/api/_struct/_field"
-	"strings"
 
 	"github.com/licat233/sql2rpc/tools"
 )
@@ -26,12 +27,12 @@ type Struct struct {
 }
 
 var listReqFields = _field.StructFieldCollection{
-	_field.NewStructField("PageSize", "int64", "json", "pageSize", "optional,default=20", "页面容量，默认20，可选"),
-	_field.NewStructField("Page", "int64", "json", "page", "optional,default=20", "页码，默认20，可选"),
-	_field.NewStructField("Keyword", "int64", "json", "keyword", "optional", "关键词，可选"),
+	_field.New("PageSize", "int64", "json", "pageSize", "optional,default=20", "页面容量，默认20，可选"),
+	_field.New("Page", "int64", "json", "page", "optional,default=20", "页码，默认20，可选"),
+	_field.New("Keyword", "int64", "json", "keyword", "optional", "关键词，可选"),
 }
 
-func NewStruct(name, TagType, comment string, fields _field.StructFieldCollection) *Struct {
+func New(name, TagType, comment string, fields _field.StructFieldCollection) *Struct {
 	return &Struct{
 		Name:    name,
 		TagType: TagType,
@@ -99,7 +100,7 @@ func (s *Struct) GenApiDelReqRespStruct(buf *bytes.Buffer) {
 	ss.Name = "Del" + tools.ToCamel(s.Name) + "Req"
 	ss.Comment = "删除" + s.Comment + "请求"
 	ss.Fields = []*_field.StructField{
-		_field.NewStructField("Id", "int64", "json", "id", "", s.Comment+" ID"),
+		_field.New("Id", "int64", "json", "id", "", s.Comment+" ID"),
 	}
 	buf.WriteString(fmt.Sprint(ss))
 	ss = nil
@@ -112,7 +113,7 @@ func (s *Struct) GenApiGetReqRespStruct(buf *bytes.Buffer) {
 	ss.Name = "Get" + tools.ToCamel(s.Name) + "Req"
 	ss.Comment = "获取" + s.Comment + "请求"
 	ss.Fields = []*_field.StructField{
-		_field.NewStructField("Id", "int64", "form", "id", "", s.Comment+" ID"),
+		_field.New("Id", "int64", "form", "id", "", s.Comment+" ID"),
 	}
 	buf.WriteString(fmt.Sprint(ss))
 	ss = nil
@@ -156,7 +157,7 @@ func (s *Struct) GenApiGetEnumsReqRespStruct(buf *bytes.Buffer) {
 	ss.Comment = "获取" + s.Comment + "枚举请求"
 	ss.TagType = "form"
 	ss.Fields = []*_field.StructField{
-		_field.NewStructField("ParentId", "int64", "form", "parent_id", "optional,default=-1", "父级ID"),
+		_field.New("ParentId", "int64", "form", "parent_id", "optional,default=-1", "父级ID"),
 	}
 	buf.WriteString(fmt.Sprint(ss))
 	ss = nil

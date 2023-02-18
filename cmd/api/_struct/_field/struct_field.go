@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:26:33
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 22:36:33
+ * @LastEditTime: 2023-02-18 09:45:17
  * @Description: licat233@gmail.com
  */
 
@@ -26,8 +26,8 @@ type StructField struct {
 	Comment string
 }
 
-// NewStructField creates a new type field.
-func NewStructField(name, typ, tagType, tagName, tagOpt, comment string) *StructField {
+// New creates a new type field.
+func New(name, typ, tagType, tagName, tagOpt, comment string) *StructField {
 	if tagName == "" {
 		tagName = name
 	}

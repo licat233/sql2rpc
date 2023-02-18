@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-06 21:49:04
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 22:48:48
+ * @LastEditTime: 2023-02-18 09:41:51
  * @Description: licat233@gmail.com
  */
 
@@ -22,7 +22,7 @@ type Rpc struct {
 	Comment string
 }
 
-func NewRpc(name, req, resp, comment string) *Rpc {
+func New(name, req, resp, comment string) *Rpc {
 	return &Rpc{
 		Name:    name,
 		Req:     req,
