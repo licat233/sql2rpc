@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 18:11:19
+ * @LastEditTime: 2023-02-20 12:00:43
  * @Description: licat233@gmail.com
  */
 
@@ -55,9 +55,14 @@ var baseStructCollection StructCollection = []*Struct{
 	New("Resp", "json", "空响应", _field.StructFieldCollection{
 		_field.New("Body", "interface{}", "json", "body", "", "响应数据"),
 	}),
+	New("JwtToken", "json", "jwt token", _field.StructFieldCollection{
+		_field.New("AccessToken", "string", "json", "accessToken", "", "token"),
+		_field.New("AccessExpire", "int64", "json", "accessExpire", "", "expire"),
+		_field.New("RefreshAfter", "int64", "json", "refreshAfter", "", "refresh time"),
+	}),
 	New("BaseResp", "json", "规范响应体", _field.StructFieldCollection{
 		_field.New("Status", "bool", "json", "success", "", "响应状态"),
-		_field.New("Message", "string", "json", "_message", "optional,omitempty", "给予的提示信息"),
+		_field.New("Message", "string", "json", "message", "optional,omitempty", "给予的提示信息"),
 		_field.New("Data", "interface{}", "json", "data", "optional,omitempty", "【选填】响应的业务数据"),
 		_field.New("Total", "int64", "json", "total", "optional,omitempty", "【选填】数据总个数"),
 		_field.New("PageSize", "int64", "json", "pageSize,omitempty", "optional", "【选填】单页数量"),

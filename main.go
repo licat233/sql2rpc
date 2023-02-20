@@ -101,7 +101,7 @@ func Initialize() {
 	pbMultiple := flag.Bool(defaultConfig.PbMultiple.FlagBool())
 	// apiStatus flag
 	apiStatus := flag.Bool(defaultConfig.Api.FlagBool())
-	apiStyle := flag.String(defaultConfig.Style.FlagString())
+	apiStyle := flag.String(defaultConfig.ApiStyle.FlagString())
 	apiJwt := flag.String(defaultConfig.ApiJwt.FlagString())
 	apiMiddleware := flag.String(defaultConfig.ApiMiddleware.FlagString())
 	apiPrefix := flag.String(defaultConfig.ApiPrefix.FlagString())
@@ -147,7 +147,7 @@ func Initialize() {
 		PbGoPackage:     defaultConfig.PbGoPackage.Set(*pbGoPackageName),
 		PbMultiple:      defaultConfig.PbMultiple.Set(*pbMultiple),
 		Api:             defaultConfig.Api.Set(*apiStatus),
-		Style:           defaultConfig.Style.Set(*apiStyle),
+		ApiStyle:        defaultConfig.ApiStyle.Set(*apiStyle),
 		ApiJwt:          defaultConfig.ApiJwt.Set(*apiJwt),
 		ApiMiddleware:   defaultConfig.ApiMiddleware.Set(*apiMiddleware),
 		ApiPrefix:       defaultConfig.ApiPrefix.Set(*apiPrefix),

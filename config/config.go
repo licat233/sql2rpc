@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-06 14:29:01
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 17:19:51
+ * @LastEditTime: 2023-02-20 11:55:33
  * @Description: licat233@gmail.com
  */
 package config
@@ -52,7 +52,7 @@ type Config struct {
 
 	// api配置
 	Api           _item.Field
-	Style         _item.Field
+	ApiStyle      _item.Field
 	ApiJwt        _item.Field
 	ApiMiddleware _item.Field
 	ApiPrefix     _item.Field
@@ -78,7 +78,7 @@ func NewDefaultConfig() *Config {
 		PbGoPackage:     _item.NewConfigItem("pb_gopackage", "", "the protocol buffer go_package, defaults to the service name", false),
 		PbMultiple:      _item.NewConfigItem("pb_multiple", false, "the generated in multiple rpc service mode", false),
 		Api:             _item.NewConfigItem("api", false, "generate .api files", false),
-		Style:           _item.NewConfigItem("api_style", SnakeCase, fmt.Sprintf("the struct json naming format: %s | %s | %s ", SnakeCase, CamelCase, LowerCamelCase), false),
+		ApiStyle:        _item.NewConfigItem("api_style", SnakeCase, fmt.Sprintf("the struct json naming format: %s | %s | %s ", SnakeCase, CamelCase, LowerCamelCase), false),
 		ApiJwt:          _item.NewConfigItem("api_jwt", "", "the api service jwt, example: Auth", false),
 		ApiMiddleware:   _item.NewConfigItem("api_middleware", "", "the api service middleware,  split multiple value by \",\", example: AuthMiddleware", false),
 		ApiPrefix:       _item.NewConfigItem("api_prefix", "", "the api service route prefix, example: api", false),
@@ -112,7 +112,7 @@ func (c *Config) Assignment(cmdConfig *Config) *Config {
 		PbGoPackage:     c.PbGoPackage.Init(cmdConfig.PbGoPackage.Value()),
 		PbMultiple:      c.PbMultiple.Init(cmdConfig.PbMultiple.Value()),
 		Api:             c.Api.Init(cmdConfig.Api.Value()),
-		Style:           c.Style.Init(cmdConfig.Style.Value()),
+		ApiStyle:        c.ApiStyle.Init(cmdConfig.ApiStyle.Value()),
 		ApiJwt:          c.ApiJwt.Init(cmdConfig.ApiJwt.Value()),
 		ApiMiddleware:   c.ApiMiddleware.Init(cmdConfig.ApiMiddleware.Value()),
 		ApiPrefix:       c.ApiPrefix.Init(cmdConfig.ApiPrefix.Value()),

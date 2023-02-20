@@ -1,3 +1,10 @@
+/*
+ * @Author: licat
+ * @Date: 2023-02-10 00:51:06
+ * @LastEditors: licat
+ * @LastEditTime: 2023-02-20 11:56:40
+ * @Description: licat233@gmail.com
+ */
 package common
 
 import (
@@ -6,15 +13,15 @@ import (
 )
 
 // ConvertStringStyle 转化字符串风格，默认 snake 风格
-func ConvertStringStyle(s string) string {
-	switch config.C.Style.GetString() {
+func ConvertStringStyle(style, name string) string {
+	switch style {
 	case config.CamelCase:
-		return tools.ToCamel(s)
+		return tools.ToCamel(name)
 	case config.LowerCamelCase:
-		return tools.ToLowerCamel(s)
+		return tools.ToLowerCamel(name)
 	case config.SnakeCase:
-		return tools.ToSnake(s)
+		return tools.ToSnake(name)
 	default:
-		return tools.ToSnake(s)
+		return tools.ToSnake(name)
 	}
 }

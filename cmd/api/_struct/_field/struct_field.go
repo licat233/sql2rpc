@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:26:33
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 16:09:52
+ * @LastEditTime: 2023-02-20 12:00:04
  * @Description: licat233@gmail.com
  */
 
@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/licat233/sql2rpc/cmd/common"
+	"github.com/licat233/sql2rpc/config"
 	"github.com/licat233/sql2rpc/tools"
 )
 
@@ -43,7 +44,10 @@ func New(name, typ, tagType, tagName, tagOpt, comment string) *StructField {
 
 // String returns a string representation of a type field.
 func (f StructField) String() string {
-	tName := common.ConvertStringStyle(f.TagName)
+	if f.TagName == "" {
+		f.TagName = f.Name
+	}
+	tName := common.ConvertStringStyle(config.C.ApiStyle.GetString(), f.TagName)
 	optString := handleOptContent(tName, f.TagOpt)
 	comment := strings.TrimSpace(f.Comment)
 	if comment == "" {
