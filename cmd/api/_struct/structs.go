@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-20 12:00:43
+ * @LastEditTime: 2023-02-20 12:14:24
  * @Description: licat233@gmail.com
  */
 
@@ -46,6 +46,11 @@ var baseStructCollection StructCollection = []*Struct{
 	New("TreeOptions", "json", "树形选项列表", _field.StructFieldCollection{
 		_field.New("List", "[]TreeOption", "json", "list", "", "树形选项列表数据"),
 	}),
+	New("JwtToken", "json", "jwt token", _field.StructFieldCollection{
+		_field.New("AccessToken", "string", "json", "accessToken", "", "token"),
+		_field.New("AccessExpire", "int64", "json", "accessExpire", "", "expire"),
+		_field.New("RefreshAfter", "int64", "json", "refreshAfter", "", "refresh at"),
+	}),
 	New("ListReq", "form", "列表数据请求", listReqFields.Copy().PutTagType("form")),
 	New("ByIdReq", "form", "通过ID请求", _field.StructFieldCollection{
 		_field.New("Id", "int64", "form", "id", "", "主键"),
@@ -55,10 +60,9 @@ var baseStructCollection StructCollection = []*Struct{
 	New("Resp", "json", "空响应", _field.StructFieldCollection{
 		_field.New("Body", "interface{}", "json", "body", "", "响应数据"),
 	}),
-	New("JwtToken", "json", "jwt token", _field.StructFieldCollection{
-		_field.New("AccessToken", "string", "json", "accessToken", "", "token"),
-		_field.New("AccessExpire", "int64", "json", "accessExpire", "", "expire"),
-		_field.New("RefreshAfter", "int64", "json", "refreshAfter", "", "refresh time"),
+	New("CaptchaResp", "json", "验证码响应", _field.StructFieldCollection{
+		_field.New("CaptchaId", "string", "json", "captchaId", "", "captcha id"),
+		_field.New("ExpiresAt", "int64", "json", "expiresAt", "", "expires time"),
 	}),
 	New("BaseResp", "json", "规范响应体", _field.StructFieldCollection{
 		_field.New("Status", "bool", "json", "success", "", "响应状态"),

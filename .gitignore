@@ -30,5 +30,6 @@ _testmain.go
 build/
 .DS_Store
 test
+push.sh
 
 exemples/sql2rpc
