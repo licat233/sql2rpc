@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-05 17:14:15
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 14:55:25
+ * @LastEditTime: 2023-02-20 14:27:33
  * @Description: licat233@gmail.com
  */
 package common
@@ -50,33 +50,27 @@ func PickMarkContents(startMark, endMark, oldContent string) ([]string, error) {
 }
 
 func InsertCustomContent(buf *bytes.Buffer, startMark, endMark, oldContent, indent string) error {
-
-	buf.WriteString(fmt.Sprintf("\n\n%s// The content in this block will not be updated", indent))
-	buf.WriteString(fmt.Sprintf("\n%s// 此区块内的内容不会被更新", indent))
-
 	list, err := PickMarkContents(startMark, endMark, oldContent)
 	if err != nil {
 		return err
 	}
-
 	customContent := strings.Join(list, "\n")
 	customContent = strings.Trim(customContent, "\n")
-	// if indent != "" {
-	// 	customContent = FormatContent(customContent, indent)
-	// }
-
-	customContent = fmt.Sprintf("\n%s\n", customContent)
-	startMark = fmt.Sprintf("\n%s%s\n", indent, startMark)
-	endMark = fmt.Sprintf("\n%s%s\n", indent, endMark)
-
-	buf.WriteString(startMark)
-	buf.WriteString(customContent)
-	buf.WriteString(endMark)
+	buf.WriteString(GenCustomBlock(startMark, endMark, customContent, indent))
 	return nil
 }
 
+func GenCustomBlock(startMark, endMark, content, indent string) string {
+	var buf = new(bytes.Buffer)
+	buf.WriteString(fmt.Sprintf("\n\n%s// The content in this block will not be updated\n%s// 此区块内的内容不会被更新", indent, indent))
+	buf.WriteString(fmt.Sprintf("\n%s%s\n", indent, startMark))
+	buf.WriteString(fmt.Sprintf("\n%s\n", content))
+	buf.WriteString(fmt.Sprintf("\n%s%s\n", indent, endMark))
+	return buf.String()
+}
+
 func PickInfoContent(content string) string {
-	re := regexp.MustCompile(`(?s)info\s*\((.*?)\n\)`)
+	re := regexp.MustCompile(`(?s)info\s*\((.*?)\n\s*\)`)
 	match := re.FindStringSubmatch(content)
 
 	if len(match) == 2 {
