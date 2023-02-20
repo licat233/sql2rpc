@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-07 13:40:54
  * @LastEditors: licat
- * @LastEditTime: 2023-02-20 17:16:01
+ * @LastEditTime: 2023-02-21 00:01:34
  * @Description: licat233@gmail.com
  */
 
@@ -10,7 +10,7 @@ package config
 
 const (
 	// CurrentVersion 当前项目版本
-	CurrentVersion = "v1.3.4"
+	CurrentVersion = "v1.3.5"
 
 	// ProjectName 当前项目名称
 	ProjectName = "sql2rpc"
@@ -41,7 +41,24 @@ var (
 	Info *info   = &info{}
 
 	IgnoreTables  = []string{}
-	IgnoreColumns = []string{"create_time", "update_time", "version", "del_state", "delete_time", "create_at", "update_at", "delete_at", "is_deleted"}
+	IgnoreColumns = []string{
+		"version",
+		"create_time",
+		"created_time",
+		"create_at",
+		"created_at",
+		"update_time",
+		"updated_time",
+		"update_at",
+		"updated_at",
+		"delete_time",
+		"deleted_time",
+		"delete_at",
+		"deleted_at",
+		"del_state",
+		"is_deleted",
+		"is_delete",
+	}
 
 	InfoStartMark, InfoEndMark       = GetMark("Info")
 	ImportStartMark, ImportEndMark   = GetMark("Import")
