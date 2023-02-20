@@ -69,7 +69,7 @@ type GetAdminerReq {
 type GetAdminerListReq {
   PageSize int64 `form:"page_size,optional,default=20"`  // 页面容量，默认20，可选
   Page int64 `form:"page,optional,default=20"`  // 页码，默认20，可选
-  Keyword int64 `form:"keyword,optional"`  // 关键词，可选
+  Keyword string `form:"keyword,optional"`  // 关键词，可选
   Id int64 `form:"id,optional,default=-1"`  // 表主键
   Uuid string `form:"uuid,optional"`  // 唯一识别码
   Name string `form:"name,optional"`  // 管理员名称

@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:25:08
  * @LastEditors: licat
- * @LastEditTime: 2023-02-18 09:45:08
+ * @LastEditTime: 2023-02-20 10:39:52
  * @Description: licat233@gmail.com
  */
 package _struct
@@ -29,7 +29,7 @@ type Struct struct {
 var listReqFields = _field.StructFieldCollection{
 	_field.New("PageSize", "int64", "json", "pageSize", "optional,default=20", "页面容量，默认20，可选"),
 	_field.New("Page", "int64", "json", "page", "optional,default=20", "页码，默认20，可选"),
-	_field.New("Keyword", "int64", "json", "keyword", "optional", "关键词，可选"),
+	_field.New("Keyword", "string", "json", "keyword", "optional", "关键词，可选"),
 }
 
 func New(name, TagType, comment string, fields _field.StructFieldCollection) *Struct {
