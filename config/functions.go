@@ -143,8 +143,8 @@ func ParseIgnoreString(s string) []string {
 }
 
 func GetMark(name string) (startMark string, endMark string) {
-	startMark = "// ------------------------------------ " + name + " Start ------------------------------------"
-	endMark = "// ------------------------------------ " + name + " End ------------------------------------"
+	startMark = "// ------------------------------ " + name + " Start ------------------------------"
+	endMark = "// ------------------------------ " + name + " End ------------------------------"
 	return
 }
 

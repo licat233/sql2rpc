@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-17 22:40:09
+ * @LastEditTime: 2023-02-20 17:11:24
  * @Description: licat233@gmail.com
  */
 package _message
@@ -28,14 +28,14 @@ var baseMessageCollection MessageCollection = []*Message{
 		_field.New("int64", "value", 2, "值"),
 	}),
 	New("Enums", "枚举列表", _field.MessageFieldCollection{
-		_field.New("repeated Enum", "list", 1, "枚举列表数据"),
+		_field.New("repeated Enum", "enums", 1, "枚举列表数据"),
 	}),
 	New("Option", "选项", _field.MessageFieldCollection{
 		_field.New("string", "title", 1, "标题"),
 		_field.New("int64", "value", 2, "值"),
 	}),
 	New("Options", "选项列表", _field.MessageFieldCollection{
-		_field.New("repeated Option", "list", 1, "选项列表数据"),
+		_field.New("repeated Option", "options", 1, "选项列表数据"),
 	}),
 	New("TreeOption", "树形选项", _field.MessageFieldCollection{
 		_field.New("string", "title", 1, "标题"),
@@ -43,7 +43,7 @@ var baseMessageCollection MessageCollection = []*Message{
 		_field.New("repeated TreeOption", "children", 3, "子集"),
 	}),
 	New("TreeOptions", "树形选项列表", _field.MessageFieldCollection{
-		_field.New("repeated TreeOption", "list", 1, "树形选项列表数据"),
+		_field.New("repeated TreeOption", "tree_options", 1, "树形选项列表数据"),
 	}),
 	New("StatusResp", "状态响应", _field.MessageFieldCollection{
 		_field.New("bool", "status", 1, "状态"),

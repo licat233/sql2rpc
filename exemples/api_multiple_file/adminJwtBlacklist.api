@@ -1,6 +1,6 @@
 syntax = "v1"
 
-// ------------------------------------ Import Start ------------------------------------
+// ------------------------------ Import Start ------------------------------
 
 // The content in this block will not be updated
 // 此区块内的内容不会被更新
@@ -8,7 +8,7 @@ syntax = "v1"
 
 //[custom import end]
 
-// ------------------------------------ Struct Start ------------------------------------
+// ------------------------------ Struct Start ------------------------------
 
 //---------jwt黑名单---------
 
@@ -74,7 +74,7 @@ type GetJwtBlacklistEnumsReq {
 
 //[custom struct end]
 
-// ------------------------------------ Service Start ------------------------------------
+// ------------------------------ Service Start ------------------------------
 
 // jwt黑名单
 @server(
@@ -114,14 +114,5 @@ service admin-api {
 // The content in this block will not be updated
 // 此区块内的内容不会被更新
 //[custom service start]
-
-@server(
-  jwt: Auth
-  middleware: AuthMiddleware
-  prefix: /v1/api/admin
-)
-service admin-api {
-
-}
 
 //[custom service end]
