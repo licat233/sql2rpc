@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-20 12:14:24
+ * @LastEditTime: 2023-02-22 12:13:26
  * @Description: licat233@gmail.com
  */
 
@@ -26,7 +26,7 @@ type StructCollection []*Struct
 var baseStructCollection StructCollection = []*Struct{
 	New("Enum", "json", "枚举", _field.StructFieldCollection{
 		_field.New("Label", "interface{}", "json", "label", "", "名"),
-		_field.New("Value", "interface{}", "json", "label", "", "值"),
+		_field.New("Value", "interface{}", "json", "value", "", "值"),
 	}),
 	New("Enums", "json", "枚举列表", _field.StructFieldCollection{
 		_field.New("List", "[]Enum", "json", "list", "", "枚举列表数据"),
