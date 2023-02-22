@@ -2,7 +2,7 @@
  * @Author: licat
  * @Date: 2023-02-03 19:51:18
  * @LastEditors: licat
- * @LastEditTime: 2023-02-22 12:13:26
+ * @LastEditTime: 2023-02-22 17:34:14
  * @Description: licat233@gmail.com
  */
 
@@ -69,7 +69,7 @@ var baseStructCollection StructCollection = []*Struct{
 		_field.New("Message", "string", "json", "message", "optional,omitempty", "给予的提示信息"),
 		_field.New("Data", "interface{}", "json", "data", "optional,omitempty", "【选填】响应的业务数据"),
 		_field.New("Total", "int64", "json", "total", "optional,omitempty", "【选填】数据总个数"),
-		_field.New("PageSize", "int64", "json", "pageSize,omitempty", "optional", "【选填】单页数量"),
+		_field.New("PageSize", "int64", "json", "pageSize", "optional,omitempty", "【选填】单页数量"),
 		_field.New("Page", "int64", "json", "current", "optional,omitempty", "【选填】当前页码，current与antd前端对接"),
 		_field.New("TotalPage", "int64", "json", "totalPage", "optional,omitempty", "【选填】自增项，总共有多少页，根据前端的pageSize来计算"),
 		_field.New("ErrorCode", "int64", "json", "errorCode", "optional,omitempty", "【选填】错误类型代码：400错误请求，401未授权，500服务器内部错误，200成功"),
