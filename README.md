@@ -36,7 +36,7 @@ Usage of sql2rpc:
   -api_prefix string
         the api service route prefix, example: api
   -api_style string
-        the struct json naming format: sql_rpc | SqlRpc | sqlRpc  (default "sql_rpc")
+        the struct json naming format: sql_rpc | SqlRpc | sqlRpc  (default "sqlRpc")
   -db_host string
         the database host (default "localhost")
   -db_password string

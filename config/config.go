@@ -78,7 +78,7 @@ func NewDefaultConfig() *Config {
 		PbGoPackage:     _item.NewConfigItem("pb_gopackage", "", "the protocol buffer go_package, defaults to the service name", false),
 		PbMultiple:      _item.NewConfigItem("pb_multiple", false, "the generated in multiple rpc service mode", false),
 		Api:             _item.NewConfigItem("api", false, "generate .api files", false),
-		ApiStyle:        _item.NewConfigItem("api_style", SnakeCase, fmt.Sprintf("the struct json naming format: %s | %s | %s ", SnakeCase, CamelCase, LowerCamelCase), false),
+		ApiStyle:        _item.NewConfigItem("api_style", LowerCamelCase, fmt.Sprintf("the struct json naming format: %s | %s | %s ", SnakeCase, CamelCase, LowerCamelCase), false),
 		ApiJwt:          _item.NewConfigItem("api_jwt", "", "the api service jwt, example: Auth", false),
 		ApiMiddleware:   _item.NewConfigItem("api_middleware", "", "the api service middleware,  split multiple value by \",\", example: AuthMiddleware", false),
 		ApiPrefix:       _item.NewConfigItem("api_prefix", "", "the api service route prefix, example: api", false),
