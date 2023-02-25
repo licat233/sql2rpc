@@ -53,7 +53,8 @@ type GetJwtBlacklistReq {
 //获取jwt黑名单列表请求
 type GetJwtBlacklistListReq {
   PageSize int64 `form:"pageSize,optional,default=20"`  // 页面容量，默认20，可选
-  Page int64 `form:"page,optional,default=20"`  // 页码，默认20，可选
+  Page int64 `form:"page,optional,default=1"`  // 当前页码，默认1，可选
+  Current int64 `form:"current,optional,default=1"`  // 当前页码，默认1，用于对接umijs，可选
   Keyword string `form:"keyword,optional"`  // 关键词，可选
   Id int64 `form:"id,optional,default=-1"`  // 表主键
   Uuid string `form:"uuid,optional"`  // 用户或者管理员的唯一识别码

@@ -23,6 +23,13 @@ import (
 // StructCollection represents a sortable collection of messages.
 type StructCollection []*Struct
 
+var listReqFields = _field.StructFieldCollection{
+	_field.New("PageSize", "int64", "json", "pageSize", "optional,default=20", "页面容量，默认20，可选"),
+	_field.New("Page", "int64", "json", "page", "optional,default=1", "当前页码，默认1，可选"),
+	_field.New("Current", "int64", "json", "current", "optional,default=1", "当前页码，默认1，用于对接umijs，可选"),
+	_field.New("Keyword", "string", "json", "keyword", "optional", "关键词，可选"),
+}
+
 var baseStructCollection StructCollection = []*Struct{
 	New("Enum", "json", "枚举", _field.StructFieldCollection{
 		_field.New("Label", "interface{}", "json", "label", "", "名"),
@@ -71,8 +78,8 @@ var baseStructCollection StructCollection = []*Struct{
 		_field.New("Data", "interface{}", "json", "data", "optional,omitempty", "【选填】响应的业务数据"),
 		_field.New("Total", "int64", "json", "total", "optional,omitempty", "【选填】数据总个数"),
 		_field.New("PageSize", "int64", "json", "pageSize", "optional,omitempty", "【选填】单页数量"),
-		_field.New("Current", "int64", "json", "current", "optional,omitempty", "【选填】当前页码"),
-		_field.New("Page", "int64", "json", "page", "optional,omitempty", "【选填】当前页码，用于对接umijs"),
+		_field.New("Current", "int64", "json", "current", "optional,omitempty", "【选填】当前页码，用于对接umijs"),
+		_field.New("Page", "int64", "json", "page", "optional,omitempty", "【选填】当前页码"),
 		_field.New("TotalPage", "int64", "json", "totalPage", "optional,omitempty", "【选填】自增项，总共有多少页，根据前端的pageSize来计算"),
 		_field.New("ErrorCode", "int64", "json", "errorCode", "optional,omitempty", "【选填】错误类型代码：400错误请求，401未授权，500服务器内部错误，200成功"),
 		_field.New("ErrorMessage", "string", "json", "errorMessage", "optional,omitempty", "【选填】向用户显示消息"),

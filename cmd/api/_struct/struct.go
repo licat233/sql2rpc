@@ -26,12 +26,6 @@ type Struct struct {
 	Fields  _field.StructFieldCollection
 }
 
-var listReqFields = _field.StructFieldCollection{
-	_field.New("PageSize", "int64", "json", "pageSize", "optional,default=20", "页面容量，默认20，可选"),
-	_field.New("Page", "int64", "json", "page", "optional,default=20", "页码，默认20，可选"),
-	_field.New("Keyword", "string", "json", "keyword", "optional", "关键词，可选"),
-}
-
 func New(name, TagType, comment string, fields _field.StructFieldCollection) *Struct {
 	return &Struct{
 		Name:    name,
@@ -140,6 +134,8 @@ func (s *Struct) GenApiGetListReqRespStruct(buf *bytes.Buffer) {
 				} else {
 					field.TagOpt += ",default=-1"
 				}
+			} else if field.Typ == "float64" {
+				field.TagOpt += ",default=-1"
 			}
 		}
 		curFields = append(curFields, field)
