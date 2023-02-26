@@ -10,6 +10,7 @@ package common
 import (
 	"database/sql"
 	"log"
+	"regexp"
 	"strings"
 )
 
@@ -68,7 +69,10 @@ func DbColumns(db *sql.DB, schema, table string) ([]*Column, error) {
 		if err != nil {
 			log.Fatal(err)
 		}
-
+		typName := cs.ColumnType
+		re := regexp.MustCompile(`\(\d*\)`)
+		typName = re.ReplaceAllString(typName, "")
+		cs.ColumnType = typName
 		cols = append(cols, cs)
 	}
 	if err := rows.Err(); nil != err {

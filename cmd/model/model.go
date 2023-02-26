@@ -125,10 +125,7 @@ func (m *ModelCore) tablesFromColumns(cols []*common.Column, ignoreTables, ignor
 		tableName := c.TableName
 		msg, ok := tableMap[tableName]
 		if !ok {
-			tableMap[tableName] = &table.Table{
-				Name:    tableName,
-				Columns: []*common.Column{c},
-			}
+			tableMap[tableName] = table.New(tableName, []*common.Column{c})
 		} else {
 			msg.Columns = append(msg.Columns, c)
 		}

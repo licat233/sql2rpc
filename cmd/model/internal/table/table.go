@@ -13,8 +13,17 @@ import (
 )
 
 type Table struct {
-	Name    string
-	Columns []*common.Column
+	Name          string
+	Columns       []*common.Column
+	HasNameColumn bool
+}
+
+func New(name string, columns []*common.Column) *Table {
+	return &Table{
+		Name:          name,
+		Columns:       columns,
+		HasNameColumn: false,
+	}
 }
 
 func (t *Table) String() string {
@@ -24,16 +33,20 @@ func (t *Table) String() string {
 }
 
 func (t *Table) FindList() string {
+	t.HasNameColumn = t.hasName()
 	structName := tools.ToCamel(t.Name)
 	basisName := tools.ToLowerCamel(t.Name)
 	var buf = new(bytes.Buffer)
 	funcString := fmt.Sprintf("\nfunc (m *custom%sModel) FindList(ctx context.Context, pageSize, page int64, keyword string, %s *%s) (resp []*%s, total int64, err error) {", structName, basisName, structName, structName)
 	buf.WriteString(funcString)
+	if t.HasNameColumn {
+		buf.WriteString("\n\thasName := false")
+	}
 	baseSq := fmt.Sprintf("\n\tsq := squirrel.Select(%sRows).From(m.table)", basisName)
 	buf.WriteString(baseSq)
-	buf.WriteString(fmt.Sprintf("\n\tif %s != nil {", basisName))
+
 	t.thanString(buf)
-	buf.WriteString("\n\t}")
+
 	buf.WriteString("\n\tif pageSize > 0 && page > 0 {")
 	buf.WriteString("\n\t\tsqCount := sq.RemoveLimit().RemoveOffset()")
 	buf.WriteString("\n\t\tsq = sq.Offset(uint64((page - 1) * pageSize)).Limit(uint64(pageSize))")
@@ -42,7 +55,7 @@ func (t *Table) FindList() string {
 	buf.WriteString(fmt.Sprintf("\n\t\tqueryCount = strings.ReplaceAll(queryCount, %sRows, \"COUNT(*)\")", basisName))
 	buf.WriteString("\n\t\tif err = m.conn.QueryRowCtx(ctx, &total, queryCount, agrsCount...); err != nil {\n\t\t\treturn\n\t\t}")
 	buf.WriteString("\n\t}")
-	buf.WriteString("\n\tquery, agrs, err := sq.ToSql()\n\tif err != nil {\n\t\treturn\n\t}\n\treturn")
+	buf.WriteString("\n\tquery, agrs, err := sq.ToSql()\n\tif err != nil {\n\t\treturn\n\t}")
 	buf.WriteString(fmt.Sprintf("\n\tresp = make([]*%s, 0)", structName))
 	buf.WriteString("\n\tif err = m.conn.QueryRowsCtx(ctx, &resp, query, agrs...); err != nil {\n\t\treturn\n\t}")
 	buf.WriteString("\n\treturn")
@@ -52,6 +65,8 @@ func (t *Table) FindList() string {
 
 func (t *Table) thanString(buf *bytes.Buffer) {
 	basisName := tools.ToLowerCamel(t.Name)
+	hasName := false
+	buf.WriteString(fmt.Sprintf("\n\tif %s != nil {", basisName))
 	for _, c := range t.Columns {
 		var than string
 		//判断是字符串，还是数字
@@ -64,14 +79,42 @@ func (t *Table) thanString(buf *bytes.Buffer) {
 		} else if tName == "string" {
 			than = "!= \"\""
 		} else {
+			// fmt.Println("unknow column type:", c.ColumnName, "-", tName, "-", c.ColumnType)
 			continue
 		}
 		cName := tools.ToCamel(c.ColumnName)
 		cV := fmt.Sprintf("%s.%s", basisName, cName)
 		buf.WriteString(fmt.Sprintf("\n\t\tif %s %s {", cV, than))
 		buf.WriteString(fmt.Sprintf("\n\t\t\tsq = sq.Where(\"%s = ?\", %s)", c.ColumnName, cV))
+		if strings.ToLower(c.ColumnName) == "name" {
+			buf.WriteString("\n\t\t\thasName = true")
+			hasName = true
+		}
 		buf.WriteString("\n\t\t}")
 	}
+	buf.WriteString("\n\t}")
+	if hasName {
+		buf.WriteString("\n\tif keyword != \"\" && !hasName {")
+		buf.WriteString("\n\t\tsq = sq.Where(\"name LIKE ?\", fmt.Sprintf(\"%%%s%%\", keyword))")
+		buf.WriteString("\n\t}")
+	}
+}
+
+func (t *Table) hasName() bool {
+	if t.HasNameColumn {
+		return true
+	}
+	for _, c := range t.Columns {
+		if strings.ToLower(c.ColumnName) == "name" {
+			tName := convTypeName(c.ColumnType)
+			if tName == "string" {
+				t.HasNameColumn = true
+				return true
+			}
+			return true
+		}
+	}
+	return false
 }
 
 func isIdColumn(name string) bool {
@@ -128,10 +171,7 @@ func (t *Table) UpdateGoModelFile() error {
 	}(f)
 	conf.FileContent = fileContent
 	content := t.String()
-	fileContent, err = common.UpdateMarkContent(config.BaseFuncsStartMark, config.BaseFuncsEndMark, fileContent, content)
-	if err != nil {
-		return err
-	}
+	fileContent = common.UpdateMarkContent(config.BaseFuncsStartMark, config.BaseFuncsEndMark, fileContent, content)
 	_, err = f.WriteString(fileContent)
 	if has {
 		fmt.Println(config.UpdatedFileMsg, filename)

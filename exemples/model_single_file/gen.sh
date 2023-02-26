@@ -21,7 +21,7 @@ if [ ! -f "../sql2rpc" ]; then
     ../build.sh
 fi
 
-rm -f ./*.go
+# rm -f ./*.go
 
 goctl model mysql ddl --src "../sql/admin.sql" -dir . --style goZero
 go mod tidy

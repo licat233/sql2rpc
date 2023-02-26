@@ -59,6 +59,8 @@ Usage of sql2rpc:
         the table to ignore, split multiple value by ","
   -init
         Create default config file，priority is given to the data in this file
+  -model
+        generate extend model .go files
   -pb
         generate .proto files
   -pb_gopackage string
