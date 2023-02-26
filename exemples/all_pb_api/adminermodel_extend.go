@@ -66,7 +66,7 @@ func (m *extendAdminerModel) FindList(ctx context.Context, pageSize, page int64,
 	}
 	if pageSize > 0 && page > 0 {
 		sqCount := sq.RemoveLimit().RemoveOffset()
-		sq = sq.Offset(uint64((page - 1) * pageSize)).Limit(uint64(pageSize))
+		sq = sq.Limit(uint64(pageSize)).Offset(uint64((page - 1) * pageSize))
 		queryCount, agrsCount, e := sqCount.ToSql()
 		if e != nil {
 			err = e

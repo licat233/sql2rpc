@@ -45,7 +45,7 @@ func (m *extendJwtBlacklistModel) FindList(ctx context.Context, pageSize, page i
 	}
 	if pageSize > 0 && page > 0 {
 		sqCount := sq.RemoveLimit().RemoveOffset()
-		sq = sq.Offset(uint64((page - 1) * pageSize)).Limit(uint64(pageSize))
+		sq = sq.Limit(uint64(pageSize)).Offset(uint64((page - 1) * pageSize))
 		queryCount, agrsCount, e := sqCount.ToSql()
 		if e != nil {
 			err = e

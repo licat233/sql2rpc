@@ -136,7 +136,7 @@ func (t *Table) FindList() string {
 
 	buf.WriteString("\n\tif pageSize > 0 && page > 0 {")
 	buf.WriteString("\n\t\tsqCount := sq.RemoveLimit().RemoveOffset()")
-	buf.WriteString("\n\t\tsq = sq.Offset(uint64((page - 1) * pageSize)).Limit(uint64(pageSize))")
+	buf.WriteString("\n\t\tsq = sq.Limit(uint64(pageSize)).Offset(uint64((page - 1) * pageSize))")
 	buf.WriteString("\n\t\tqueryCount, agrsCount, e := sqCount.ToSql()")
 	buf.WriteString("\n\t\tif e != nil {\n\t\t\terr = e\n\t\t\treturn\n\t\t}")
 	buf.WriteString(fmt.Sprintf("\n\t\tqueryCount = strings.ReplaceAll(queryCount, %sRows, \"COUNT(*)\")", lowerName))
