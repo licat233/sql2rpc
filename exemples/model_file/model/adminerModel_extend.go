@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/Masterminds/squirrel"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type (
@@ -18,9 +17,9 @@ type (
 	}
 )
 
-func NewExtendAdminerModelModel(conn sqlx.SqlConn) adminermodel {
+func NewExtendAdminerModelModel(defaultAdminerModel *defaultAdminerModel) adminermodel {
 	return &extendAdminerModel{
-		defaultAdminerModel: newAdminerModel(conn),
+		defaultAdminerModel,
 	}
 }
 

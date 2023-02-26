@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/Masterminds/squirrel"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type (
@@ -17,9 +16,9 @@ type (
 	}
 )
 
-func NewExtendJwtBlacklistModelModel(conn sqlx.SqlConn) jwtBlacklistmodel {
+func NewExtendJwtBlacklistModelModel(defaultJwtBlacklistModel *defaultJwtBlacklistModel) jwtBlacklistmodel {
 	return &extendJwtBlacklistModel{
-		defaultJwtBlacklistModel: newJwtBlacklistModel(conn),
+		defaultJwtBlacklistModel,
 	}
 }
 
