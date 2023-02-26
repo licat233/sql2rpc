@@ -10,7 +10,7 @@ package config
 
 const (
 	// CurrentVersion 当前项目版本
-	CurrentVersion = "v1.3.9"
+	CurrentVersion = "v1.4.0"
 
 	// ProjectName 当前项目名称
 	ProjectName = "sql2rpc"
@@ -29,8 +29,9 @@ const (
 	LowerCamelCase = "sqlRpc"
 	SnakeCase      = "sql_rpc"
 
-	ApiCoreName = "api" //api服务名
-	PbCoreName  = "pb"  //pb服务名
+	ApiCoreName   = "api"   //api服务名
+	PbCoreName    = "pb"    //pb服务名
+	ModelCoreName = "model" //model服务名
 
 	UpdatedFileMsg = "已更新文件"
 	CreatedFileMsg = "已创建文件"
@@ -66,6 +67,8 @@ var (
 	EnumStartMark, EnumEndMark       = GetMark("Enum")
 	MessageStartMark, MessageEndMark = GetMark("Message")
 	ServiceStartMark, ServiceEndMark = GetMark("Service")
+
+	BaseFuncsStartMark, BaseFuncsEndMark = GetBaseMark("Funcs")
 
 	CustomImportStartMark, CustomImportEndMark   = GetCustomMark("import")
 	CustomStructStartMark, CustomStructEndMark   = GetCustomMark("struct")

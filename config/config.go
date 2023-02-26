@@ -57,6 +57,9 @@ type Config struct {
 	ApiMiddleware _item.Field
 	ApiPrefix     _item.Field
 	ApiMultiple   _item.Field
+
+	// model配置
+	Model _item.Field
 }
 
 // 获取一个默认的Config
@@ -83,6 +86,7 @@ func NewDefaultConfig() *Config {
 		ApiMiddleware:   _item.NewConfigItem("api_middleware", "", "the api service middleware,  split multiple value by \",\", example: AuthMiddleware", false),
 		ApiPrefix:       _item.NewConfigItem("api_prefix", "", "the api service route prefix, example: api", false),
 		ApiMultiple:     _item.NewConfigItem("api_multiple", false, "Generate multiple api files according to table", false),
+		Model:           _item.NewConfigItem("model", false, "generate extend model .go files", false),
 	}
 }
 
@@ -117,6 +121,7 @@ func (c *Config) Assignment(cmdConfig *Config) *Config {
 		ApiMiddleware:   c.ApiMiddleware.Init(cmdConfig.ApiMiddleware.Value()),
 		ApiPrefix:       c.ApiPrefix.Init(cmdConfig.ApiPrefix.Value()),
 		ApiMultiple:     c.ApiMultiple.Init(cmdConfig.ApiMultiple.Value()),
+		Model:           c.Model.Init(cmdConfig.Model.Value()),
 	}
 }
 

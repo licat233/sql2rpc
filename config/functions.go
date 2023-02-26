@@ -154,6 +154,12 @@ func GetCustomMark(name string) (startMark string, endMark string) {
 	return
 }
 
+func GetBaseMark(name string) (startMark string, endMark string) {
+	startMark = "//[base " + name + " start]"
+	endMark = "//[base " + name + " end]"
+	return
+}
+
 func AddIgnoreColumns(cls ...string) []string {
 	return append(IgnoreColumns, cls...)
 }

@@ -16,6 +16,59 @@ import (
 
 var Indent = "  " //two space
 
+func HasMark(startMark, endMark, fileContent string) (bool, error) {
+	content := strings.TrimSpace(fileContent)
+	if content == "" {
+		return false, nil
+	}
+	startMark = regexp.QuoteMeta(startMark)
+	endMark = regexp.QuoteMeta(endMark)
+
+	expr := fmt.Sprintf("%s[\n]*((?s).*?)[\n]*%s", startMark, endMark)
+
+	reg, err := regexp.Compile(expr)
+	if err != nil {
+		return false, err
+	}
+	listArr := reg.FindAllStringSubmatch(content, -1)
+	if len(listArr) == 0 {
+		return false, nil
+	}
+	return true, nil
+}
+
+func ReplaceMarkContent(startMark, endMark, fileContent, content string) (string, error) {
+	if strings.TrimSpace(fileContent) == "" {
+		return "", nil
+	}
+	startMark = regexp.QuoteMeta(startMark)
+	endMark = regexp.QuoteMeta(endMark)
+	expr := fmt.Sprintf("%s[\n]*((?s).*?)[\n]*%s", startMark, endMark)
+	reg, err := regexp.Compile(expr)
+	if err != nil {
+		return "", err
+	}
+	content = GenBaseBlock(startMark, endMark, content, "")
+	res := reg.ReplaceAllString(fileContent, content)
+	return res, nil
+}
+
+func UpdateMarkContent(startMark, endMark, fileContent string, content string) (string, error) {
+	has, err := HasMark(startMark, endMark, fileContent)
+	if err != nil {
+		return "", err
+	}
+	var buf = new(bytes.Buffer)
+	buf.WriteString(fileContent)
+	if !has {
+		buf.WriteString("\n\n")
+		buf.WriteString(GenBaseBlock(startMark, endMark, content, ""))
+		return buf.String(), nil
+	}
+	res, err := ReplaceMarkContent(fileContent, startMark, endMark, content)
+	return res, err
+}
+
 func PickMarkContents(startMark, endMark, oldContent string) ([]string, error) {
 	content := strings.TrimSpace(oldContent)
 	if content == "" {
@@ -63,6 +116,14 @@ func InsertCustomContent(buf *bytes.Buffer, startMark, endMark, oldContent, inde
 func GenCustomBlock(startMark, endMark, content, indent string) string {
 	var buf = new(bytes.Buffer)
 	buf.WriteString(fmt.Sprintf("\n\n%s// The content in this block will not be updated\n%s// 此区块内的内容不会被更新", indent, indent))
+	buf.WriteString(fmt.Sprintf("\n%s%s\n", indent, startMark))
+	buf.WriteString(fmt.Sprintf("\n%s\n", content))
+	buf.WriteString(fmt.Sprintf("\n%s%s\n", indent, endMark))
+	return buf.String()
+}
+
+func GenBaseBlock(startMark, endMark, content, indent string) string {
+	var buf = new(bytes.Buffer)
 	buf.WriteString(fmt.Sprintf("\n%s%s\n", indent, startMark))
 	buf.WriteString(fmt.Sprintf("\n%s\n", content))
 	buf.WriteString(fmt.Sprintf("\n%s%s\n", indent, endMark))

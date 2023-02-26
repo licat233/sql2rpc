@@ -59,7 +59,7 @@ func New() *PbCore {
 }
 
 func (s *PbCore) Name() string {
-	return "pb"
+	return config.PbCoreName
 }
 
 func (s *PbCore) Allow() bool {

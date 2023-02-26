@@ -21,6 +21,7 @@ import (
 	"github.com/licat233/sql2rpc/update"
 
 	"github.com/licat233/sql2rpc/cmd/api"
+	"github.com/licat233/sql2rpc/cmd/model"
 	"github.com/licat233/sql2rpc/cmd/pb"
 	"github.com/licat233/sql2rpc/config"
 )
@@ -42,7 +43,7 @@ func main() {
 		}
 	}(db.Conn)
 
-	if err := cmd.New().Register(pb.New(), api.New()).Run(); err != nil {
+	if err := cmd.New().Register(pb.New(), api.New(), model.New()).Run(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -55,6 +56,7 @@ func Initialize() {
 	arges := os.Args
 	apiArgStatus := false
 	pbArgStatus := false
+	modelArgStatus := false
 	if len(arges) > 1 {
 		argV := arges[1]
 		if argV[0] != '-' {
@@ -65,6 +67,8 @@ func Initialize() {
 				apiArgStatus = true
 			} else if argV == config.PbCoreName {
 				pbArgStatus = true
+			} else if argV == config.ModelCoreName {
+				modelArgStatus = true
 			} else {
 				fmt.Println("Input command error, please enter -help or -h for help")
 				os.Exit(1)
@@ -106,11 +110,13 @@ func Initialize() {
 	apiMiddleware := flag.String(defaultConfig.ApiMiddleware.FlagString())
 	apiPrefix := flag.String(defaultConfig.ApiPrefix.FlagString())
 	apiMultiple := flag.Bool(defaultConfig.ApiMultiple.FlagBool())
-
+	// modelStatus flag
+	modelStatus := flag.Bool(defaultConfig.Model.FlagBool())
 	flag.Parse()
 
 	*pbStatus = *pbStatus || pbArgStatus
 	*apiStatus = *apiStatus || apiArgStatus
+	*modelStatus = *modelStatus || modelArgStatus
 
 	if *version1 || *version2 {
 		fmt.Println("Current version:", config.CurrentVersion)
@@ -152,6 +158,7 @@ func Initialize() {
 		ApiMiddleware:   defaultConfig.ApiMiddleware.Set(*apiMiddleware),
 		ApiPrefix:       defaultConfig.ApiPrefix.Set(*apiPrefix),
 		ApiMultiple:     defaultConfig.ApiMultiple.Set(*apiMultiple),
+		Model:           defaultConfig.Model.Set(*modelStatus),
 	}
 
 	config.C = cmdConfig.Assignment(cmdConfig)

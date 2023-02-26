@@ -50,7 +50,7 @@ func New() *ApiCore {
 }
 
 func (s *ApiCore) Name() string {
-	return "api"
+	return config.ApiCoreName
 }
 
 func (s *ApiCore) Allow() bool {
