@@ -3,8 +3,10 @@ package all_pb_api
 import (
 	"context"
 	"fmt"
-	"github.com/Masterminds/squirrel"
 	"strings"
+
+	"github.com/Masterminds/squirrel"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type (
@@ -15,6 +17,12 @@ type (
 		*defaultAdminerModel
 	}
 )
+
+func NewExtendAdminerModelModel(conn sqlx.SqlConn) adminermodel {
+	return &extendAdminerModel{
+		defaultAdminerModel: newAdminerModel(conn),
+	}
+}
 
 func (m *extendAdminerModel) FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error) {
 	hasName := false

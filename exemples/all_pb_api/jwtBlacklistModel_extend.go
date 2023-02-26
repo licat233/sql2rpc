@@ -2,8 +2,10 @@ package all_pb_api
 
 import (
 	"context"
-	"github.com/Masterminds/squirrel"
 	"strings"
+
+	"github.com/Masterminds/squirrel"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type (
@@ -14,6 +16,12 @@ type (
 		*defaultJwtBlacklistModel
 	}
 )
+
+func NewExtendJwtBlacklistModelModel(conn sqlx.SqlConn) jwtBlacklistmodel {
+	return &extendJwtBlacklistModel{
+		defaultJwtBlacklistModel: newJwtBlacklistModel(conn),
+	}
+}
 
 func (m *extendJwtBlacklistModel) FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error) {
 	sq := squirrel.Select(jwtBlacklistRows).From(m.table)

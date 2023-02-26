@@ -53,8 +53,9 @@ func (t *Table) String() string {
 	if t.hasName() {
 		buf.WriteString("\n\t\"fmt\"")
 	}
-	buf.WriteString("\n\t\"strings\"")
+	buf.WriteString("\n\t\"strings\"\n")
 	buf.WriteString("\n\t\"github.com/Masterminds/squirrel\"")
+	buf.WriteString("\n\t\"github.com/zeromicro/go-zero/core/stores/sqlx\"")
 	buf.WriteString("\n)\n")
 
 	buf.WriteString("\ntype (")
@@ -64,9 +65,17 @@ func (t *Table) String() string {
 
 	buf.WriteString("\n\t}")
 	buf.WriteString(fmt.Sprintf("\n\t%s struct {", t.strcutName))
+	// buf.WriteString("\n\t\tconn  sqlx.SqlConn")
+	// buf.WriteString("\n\t\ttable string")
 	buf.WriteString(fmt.Sprintf("\n\t\t*default%sModel", camelName))
 	buf.WriteString("\n\t}")
 	buf.WriteString("\n)\n")
+
+	buf.WriteString(fmt.Sprintf("\nfunc New%sModel(conn sqlx.SqlConn) %s {", tools.ToCamel(t.strcutName), t.interfaceName))
+	buf.WriteString(fmt.Sprintf("\n\treturn &%s{", t.strcutName))
+	buf.WriteString(fmt.Sprintf("\n\t\tdefault%sModel: new%sModel(conn),", camelName, camelName))
+	buf.WriteString("\n}")
+	buf.WriteString("\n}\n")
 
 	buf.WriteString(t.FindList())
 	return buf.String()
