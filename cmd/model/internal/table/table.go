@@ -72,7 +72,7 @@ func (t *Table) String() string {
 	buf.WriteString("\n\t}")
 	buf.WriteString("\n)\n")
 
-	buf.WriteString(fmt.Sprintf("\nfunc New%sModel(default%sModel *default%sModel) %s {", tools.ToCamel(t.strcutName), camelName, camelName, t.interfaceName))
+	buf.WriteString(fmt.Sprintf("\nfunc new%sModel(default%sModel *default%sModel) *%s {", tools.ToCamel(t.strcutName), camelName, camelName, t.strcutName))
 	buf.WriteString(fmt.Sprintf("\n\treturn &%s{", t.strcutName))
 	buf.WriteString(fmt.Sprintf("\n\t\tdefault%sModel,", camelName))
 	buf.WriteString("\n}")

@@ -19,7 +19,7 @@ type (
 	}
 )
 
-func NewExtendAdminerModelModel(defaultAdminerModel *defaultAdminerModel) adminermodel {
+func newExtendAdminerModelModel(defaultAdminerModel *defaultAdminerModel) *extendAdminerModel {
 	return &extendAdminerModel{
 		defaultAdminerModel,
 	}

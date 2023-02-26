@@ -18,7 +18,7 @@ type (
 	}
 )
 
-func NewExtendJwtBlacklistModelModel(defaultJwtBlacklistModel *defaultJwtBlacklistModel) jwtBlacklistmodel {
+func newExtendJwtBlacklistModelModel(defaultJwtBlacklistModel *defaultJwtBlacklistModel) *extendJwtBlacklistModel {
 	return &extendJwtBlacklistModel{
 		defaultJwtBlacklistModel,
 	}
