@@ -1,38 +1,22 @@
-package model_single_file
+package model_file
 
 import (
 	"context"
 	"fmt"
-	"strings"
-
 	"github.com/Masterminds/squirrel"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
+	"strings"
 )
 
-var _ AdminerModel = (*customAdminerModel)(nil)
-
 type (
-	// AdminerModel is an interface to be customized, add more methods here,
-	// and implement the added methods in customAdminerModel.
-	AdminerModel interface {
-		adminerModel
+	adminermodel interface {
+		FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error)
 	}
-
-	customAdminerModel struct {
+	extendAdminerModel struct {
 		*defaultAdminerModel
 	}
 )
 
-// NewAdminerModel returns a model for the database table.
-func NewAdminerModel(conn sqlx.SqlConn) AdminerModel {
-	return &customAdminerModel{
-		defaultAdminerModel: newAdminerModel(conn),
-	}
-}
-
-//[base Funcs start]
-
-func (m *customAdminerModel) FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error) {
+func (m *extendAdminerModel) FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error) {
 	hasName := false
 	sq := squirrel.Select(adminerRows).From(m.table)
 	if adminer != nil {
@@ -94,5 +78,3 @@ func (m *customAdminerModel) FindList(ctx context.Context, pageSize, page int64,
 	}
 	return
 }
-
-//[base Funcs end]

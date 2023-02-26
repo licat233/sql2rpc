@@ -12,6 +12,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"path"
 	"sort"
 	"strings"
 
@@ -64,6 +65,7 @@ func (s *ApiCore) Init() error {
 	} else {
 		s.Filename = tools.SetFileType(s.Filename, ".api")
 	}
+	s.Filename = path.Join(config.C.Dir.GetString(), s.Filename)
 	return nil
 }
 

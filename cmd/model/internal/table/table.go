@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"path"
 	"strings"
 
 	"github.com/licat233/sql2rpc/cmd/common"
@@ -16,33 +17,100 @@ type Table struct {
 	Name          string
 	Columns       []*common.Column
 	HasNameColumn bool
+	interfaceName string
+	strcutName    string
+	findListName  string
 }
 
 func New(name string, columns []*common.Column) *Table {
+	lowerName := tools.ToLowerCamel(name)
+	camelName := tools.ToCamel(name)
+	findList := fmt.Sprintf("FindList(ctx context.Context, pageSize, page int64, keyword string, %s *%s) (resp []*%s, total int64, err error)", lowerName, camelName, camelName)
 	return &Table{
 		Name:          name,
 		Columns:       columns,
 		HasNameColumn: false,
+		interfaceName: fmt.Sprintf("%smodel", lowerName),
+		strcutName:    fmt.Sprintf("extend%sModel", camelName),
+		findListName:  findList,
 	}
 }
 
 func (t *Table) String() string {
+	// lowerName := tools.ToLowerCamel(t.Name)
+	camelName := tools.ToCamel(t.Name)
 	var buf = new(bytes.Buffer)
+	dir, _ := tools.GetCurrentDirectoryName()
+	buf.WriteString(fmt.Sprintf("package %s\n\n", dir))
+	buf.WriteString("import (")
+	buf.WriteString("\n\t\"context\"")
+	if t.hasName() {
+		buf.WriteString("\n\t\"fmt\"")
+	}
+	buf.WriteString("\n\t\"strings\"")
+	buf.WriteString("\n\t\"github.com/Masterminds/squirrel\"")
+	buf.WriteString("\n)\n")
+
+	buf.WriteString("\ntype (")
+	buf.WriteString(fmt.Sprintf("\n\t%s interface {", t.interfaceName))
+
+	buf.WriteString(fmt.Sprintf("\n\t\t%s", t.findListName))
+
+	buf.WriteString("\n\t}")
+	buf.WriteString(fmt.Sprintf("\n\t%s struct {", t.strcutName))
+	buf.WriteString(fmt.Sprintf("\n\t\t*default%sModel", camelName))
+	buf.WriteString("\n\t}")
+	buf.WriteString("\n)\n")
+
 	buf.WriteString(t.FindList())
 	return buf.String()
 }
 
+func (t *Table) GenFile() error {
+	filename := fmt.Sprintf("%smodel_extend.go", strings.ToLower(t.Name))
+	filename = path.Join(config.C.Dir.GetString(), filename)
+	has, err := tools.PathExists(filename)
+	if err != nil {
+		return err
+	}
+	_, f, err := tools.RTCFile(filename)
+	if err != nil {
+		return err
+	}
+	defer func(f *os.File) {
+		e := f.Close()
+		if e != nil {
+			err = e
+		}
+	}(f)
+	buf := new(bytes.Buffer)
+
+	content := t.String()
+
+	content, _ = tools.FormatGoContent(content)
+
+	buf.WriteString(content)
+	// write
+	_, err = f.WriteString(buf.String())
+	if has {
+		fmt.Println(config.UpdatedFileMsg, filename)
+	} else {
+		fmt.Println(config.CreatedFileMsg, filename)
+	}
+	return nil
+}
+
 func (t *Table) FindList() string {
 	t.HasNameColumn = t.hasName()
-	structName := tools.ToCamel(t.Name)
-	basisName := tools.ToLowerCamel(t.Name)
+	camelName := tools.ToCamel(t.Name)
+	lowerName := tools.ToLowerCamel(t.Name)
 	var buf = new(bytes.Buffer)
-	funcString := fmt.Sprintf("\nfunc (m *custom%sModel) FindList(ctx context.Context, pageSize, page int64, keyword string, %s *%s) (resp []*%s, total int64, err error) {", structName, basisName, structName, structName)
+	funcString := fmt.Sprintf("\nfunc (m *%s) %s {", t.strcutName, t.findListName)
 	buf.WriteString(funcString)
 	if t.HasNameColumn {
 		buf.WriteString("\n\thasName := false")
 	}
-	baseSq := fmt.Sprintf("\n\tsq := squirrel.Select(%sRows).From(m.table)", basisName)
+	baseSq := fmt.Sprintf("\n\tsq := squirrel.Select(%sRows).From(m.table)", lowerName)
 	buf.WriteString(baseSq)
 
 	t.thanString(buf)
@@ -52,11 +120,11 @@ func (t *Table) FindList() string {
 	buf.WriteString("\n\t\tsq = sq.Offset(uint64((page - 1) * pageSize)).Limit(uint64(pageSize))")
 	buf.WriteString("\n\t\tqueryCount, agrsCount, e := sqCount.ToSql()")
 	buf.WriteString("\n\t\tif e != nil {\n\t\t\terr = e\n\t\t\treturn\n\t\t}")
-	buf.WriteString(fmt.Sprintf("\n\t\tqueryCount = strings.ReplaceAll(queryCount, %sRows, \"COUNT(*)\")", basisName))
+	buf.WriteString(fmt.Sprintf("\n\t\tqueryCount = strings.ReplaceAll(queryCount, %sRows, \"COUNT(*)\")", lowerName))
 	buf.WriteString("\n\t\tif err = m.conn.QueryRowCtx(ctx, &total, queryCount, agrsCount...); err != nil {\n\t\t\treturn\n\t\t}")
 	buf.WriteString("\n\t}")
 	buf.WriteString("\n\tquery, agrs, err := sq.ToSql()\n\tif err != nil {\n\t\treturn\n\t}")
-	buf.WriteString(fmt.Sprintf("\n\tresp = make([]*%s, 0)", structName))
+	buf.WriteString(fmt.Sprintf("\n\tresp = make([]*%s, 0)", camelName))
 	buf.WriteString("\n\tif err = m.conn.QueryRowsCtx(ctx, &resp, query, agrs...); err != nil {\n\t\treturn\n\t}")
 	buf.WriteString("\n\treturn")
 	buf.WriteString("\n}\n")

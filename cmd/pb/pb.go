@@ -12,6 +12,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"path"
 	"regexp"
 	"sort"
 	"strings"
@@ -49,6 +50,7 @@ func New() *PbCore {
 		filename = tools.ToLowerCamel(config.C.ServiceName.GetString())
 	}
 	filename = tools.SetFileType(filename, ".proto")
+	filename = path.Join(config.C.Dir.GetString(), filename)
 	return &PbCore{
 		FilePath: filename,
 		Imports:  _import.ImpCollection{},

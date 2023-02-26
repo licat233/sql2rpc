@@ -43,6 +43,7 @@ type Config struct {
 	//通用配置
 	ServiceName _item.Field
 	Filename    _item.Field
+	Dir         _item.Field
 
 	//pb配置
 	Pb          _item.Field
@@ -76,6 +77,7 @@ func NewDefaultConfig() *Config {
 		IgnoreColumnStr: _item.NewConfigItem("ignore_column", "", "the column to ignore, split multiple value by \",\"", false),
 		ServiceName:     _item.NewConfigItem("service_name", "", "the service name, defaults to the database schema", false),
 		Filename:        _item.NewConfigItem("filename", "", "the generated file name, defaults to the service name", false),
+		Dir:             _item.NewConfigItem("dir", "", "directory of generated files", false),
 		Pb:              _item.NewConfigItem("pb", false, "generate .proto files", false),
 		PbPackage:       _item.NewConfigItem("pb_package", "", "the protocol buffer package, defaults to the service name", false),
 		PbGoPackage:     _item.NewConfigItem("pb_gopackage", "", "the protocol buffer go_package, defaults to the service name", false),
@@ -111,6 +113,7 @@ func (c *Config) Assignment(cmdConfig *Config) *Config {
 		IgnoreColumnStr: c.IgnoreColumnStr.Init(cmdConfig.IgnoreColumnStr.Value()),
 		ServiceName:     c.ServiceName.Init(cmdConfig.ServiceName.Value()),
 		Filename:        c.Filename.Init(cmdConfig.Filename.Value()),
+		Dir:             c.Dir.Init(cmdConfig.Dir.Value()),
 		Pb:              c.Pb.Init(cmdConfig.Pb.Value()),
 		PbPackage:       c.PbPackage.Init(cmdConfig.PbPackage.Value()),
 		PbGoPackage:     c.PbGoPackage.Init(cmdConfig.PbGoPackage.Value()),

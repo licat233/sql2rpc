@@ -1,37 +1,21 @@
-package model_single_file
+package all_pb_api
 
 import (
 	"context"
-	"strings"
-
 	"github.com/Masterminds/squirrel"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
+	"strings"
 )
 
-var _ JwtBlacklistModel = (*customJwtBlacklistModel)(nil)
-
 type (
-	// JwtBlacklistModel is an interface to be customized, add more methods here,
-	// and implement the added methods in customJwtBlacklistModel.
-	JwtBlacklistModel interface {
-		jwtBlacklistModel
+	jwtBlacklistmodel interface {
+		FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error)
 	}
-
-	customJwtBlacklistModel struct {
+	extendJwtBlacklistModel struct {
 		*defaultJwtBlacklistModel
 	}
 )
 
-// NewJwtBlacklistModel returns a model for the database table.
-func NewJwtBlacklistModel(conn sqlx.SqlConn) JwtBlacklistModel {
-	return &customJwtBlacklistModel{
-		defaultJwtBlacklistModel: newJwtBlacklistModel(conn),
-	}
-}
-
-//[base Funcs start]
-
-func (m *customJwtBlacklistModel) FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error) {
+func (m *extendJwtBlacklistModel) FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error) {
 	sq := squirrel.Select(jwtBlacklistRows).From(m.table)
 	if jwtBlacklist != nil {
 		if jwtBlacklist.Id > 0 {
@@ -73,5 +57,3 @@ func (m *customJwtBlacklistModel) FindList(ctx context.Context, pageSize, page i
 	}
 	return
 }
-
-//[base Funcs end]

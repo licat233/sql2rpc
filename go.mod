@@ -3,6 +3,7 @@ module github.com/licat233/sql2rpc
 go 1.20
 
 require (
+	github.com/Masterminds/squirrel v1.5.3
 	github.com/chuckpreslar/inflect v0.0.0-20150228233301-423e3ac59c61
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/spf13/viper v1.15.0
@@ -57,7 +58,6 @@ require (
 )
 
 require (
-	github.com/Masterminds/squirrel v1.5.3
 	github.com/fatih/structs v1.1.0
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

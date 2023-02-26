@@ -51,6 +51,8 @@ Usage of sql2rpc:
         the database type (default "mysql")
   -db_user string
         the database user (default "root")
+  -dir string
+        directory of generated files
   -filename string
         the generated file name, defaults to the service name
   -ignore_column string
@@ -92,6 +94,12 @@ sql2rpc -pb -db_schema="admin" -db_table="*" -service_name="Admin" -filename="ad
 sql2rpc -api -db_schema="admin" -db_table="*" -service_name="admin-api" -filename="admin.api" -api_jwt="Auth" -api_middleware="AuthMiddleware" -api_prefix="api" -api_multiple=true
 ```
 
+### By cmd, generate the xxxModel_extend.go file and update it
+
+```shell
+sql2rpc -model -db_schema="admin"
+```
+
 ### Generate a configuration file
 
 Config.yaml will be created in the current directory
@@ -122,6 +130,12 @@ Generate rpc service code
 
 ```shell
 goctl rpc protoc "admin.proto" --go_out="./rpc" --go-grpc_out="./rpc" --zrpc_out="./rpc"
+```
+
+Generate model service code
+
+```shell
+goctl model mysql ddl --src "admin.sql" -dir . --style goZero
 ```
 
 ### Upgrade sql2rpc to latest version

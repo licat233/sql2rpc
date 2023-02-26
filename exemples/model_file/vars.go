@@ -1,4 +1,4 @@
-package model_single_file
+package model_file
 
 import "github.com/zeromicro/go-zero/core/stores/sqlx"
 

@@ -87,6 +87,7 @@ func Initialize() {
 	//common flag
 	serviceName := flag.String(defaultConfig.ServiceName.FlagString())
 	fileName := flag.String(defaultConfig.Filename.FlagString())
+	dirName := flag.String(defaultConfig.Dir.FlagString())
 	//database flag
 	dbType := flag.String(defaultConfig.DBType.FlagString())
 	dbHost := flag.String(defaultConfig.DBHost.FlagString())
@@ -148,6 +149,7 @@ func Initialize() {
 		IgnoreColumnStr: defaultConfig.IgnoreColumnStr.Set(*ignoreColumnStr),
 		ServiceName:     defaultConfig.ServiceName.Set(*serviceName),
 		Filename:        defaultConfig.Filename.Set(*fileName),
+		Dir:             defaultConfig.Dir.Set(*dirName),
 		Pb:              defaultConfig.Pb.Set(*pbStatus),
 		PbPackage:       defaultConfig.PbPackage.Set(*pbPackageName),
 		PbGoPackage:     defaultConfig.PbGoPackage.Set(*pbGoPackageName),
