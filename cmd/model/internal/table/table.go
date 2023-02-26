@@ -20,12 +20,15 @@ type Table struct {
 	interfaceName string
 	strcutName    string
 	findListName  string
+	fileName      string
 }
 
 func New(name string, columns []*common.Column) *Table {
 	lowerName := tools.ToLowerCamel(name)
 	camelName := tools.ToCamel(name)
 	findList := fmt.Sprintf("FindList(ctx context.Context, pageSize, page int64, keyword string, %s *%s) (resp []*%s, total int64, err error)", lowerName, camelName, camelName)
+	filename := fmt.Sprintf("%sModel_extend.go", lowerName)
+	filename = path.Join(config.C.Dir.GetString(), filename)
 	return &Table{
 		Name:          name,
 		Columns:       columns,
@@ -33,14 +36,17 @@ func New(name string, columns []*common.Column) *Table {
 		interfaceName: fmt.Sprintf("%smodel", lowerName),
 		strcutName:    fmt.Sprintf("extend%sModel", camelName),
 		findListName:  findList,
+		fileName:      filename,
 	}
 }
 
 func (t *Table) String() string {
-	// lowerName := tools.ToLowerCamel(t.Name)
 	camelName := tools.ToCamel(t.Name)
 	var buf = new(bytes.Buffer)
-	dir, _ := tools.GetCurrentDirectoryName()
+	dir := path.Dir(t.fileName)
+	if dir == "." {
+		dir, _ = tools.GetCurrentDirectoryName()
+	}
 	buf.WriteString(fmt.Sprintf("package %s\n\n", dir))
 	buf.WriteString("import (")
 	buf.WriteString("\n\t\"context\"")
@@ -67,13 +73,16 @@ func (t *Table) String() string {
 }
 
 func (t *Table) GenFile() error {
-	filename := fmt.Sprintf("%smodel_extend.go", strings.ToLower(t.Name))
-	filename = path.Join(config.C.Dir.GetString(), filename)
-	has, err := tools.PathExists(filename)
+	has, err := tools.PathExists(t.fileName)
 	if err != nil {
 		return err
 	}
-	_, f, err := tools.RTCFile(filename)
+	if !has {
+		if err = tools.MakeDir(t.fileName); err != nil {
+			return err
+		}
+	}
+	_, f, err := tools.RTCFile(t.fileName)
 	if err != nil {
 		return err
 	}
@@ -93,9 +102,9 @@ func (t *Table) GenFile() error {
 	// write
 	_, err = f.WriteString(buf.String())
 	if has {
-		fmt.Println(config.UpdatedFileMsg, filename)
+		fmt.Println(config.UpdatedFileMsg, t.fileName)
 	} else {
-		fmt.Println(config.CreatedFileMsg, filename)
+		fmt.Println(config.CreatedFileMsg, t.fileName)
 	}
 	return nil
 }

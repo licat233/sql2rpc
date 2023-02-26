@@ -80,6 +80,11 @@ func (s *PbCore) Gen() error {
 	if err != nil {
 		return err
 	}
+	if !has {
+		if err = tools.MakeDir(s.FilePath); err != nil {
+			return err
+		}
+	}
 	fileContent, f, err := tools.RTCFile(s.FilePath)
 	if err != nil {
 		return err

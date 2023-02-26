@@ -80,6 +80,27 @@ func PathExists(path string) (bool, error) {
 	return false, err
 }
 
+func MakeDir(filename string) error {
+	has, err := PathExists(filename)
+	if err != nil {
+		return err
+	}
+	if !has {
+		dir := path.Dir(filename)
+		has, err = PathExists(dir)
+		if err != nil {
+			return err
+		}
+		if !has {
+			err = os.MkdirAll(dir, os.ModePerm)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 func RTCFile(filename string) (content string, f *os.File, err error) {
 	//read
 	fd, e := os.ReadFile(filename)

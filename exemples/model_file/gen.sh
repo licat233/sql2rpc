@@ -23,10 +23,10 @@ fi
 
 rm -f ./*.go
 
-goctl model mysql ddl --src "../sql/admin.sql" -dir . --style goZero
+goctl model mysql ddl --src "../sql/admin.sql" -dir="model" --style goZero
 go mod tidy
 
-../sql2rpc -model -db_schema="admin" -db_table="*"
+../sql2rpc -model -db_schema="admin" -db_table="*" -dir="model"
 
 if [ $? -ne 0 ]; then
     exit 1

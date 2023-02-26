@@ -92,6 +92,11 @@ func (s *ApiCore) GenerateMultipleFile() error {
 	if err != nil {
 		return err
 	}
+	if !has {
+		if err = tools.MakeDir(s.Filename); err != nil {
+			return err
+		}
+	}
 	fileContent, f, err := tools.RTCFile(mainFilname)
 	if err != nil {
 		return err
@@ -171,6 +176,11 @@ func (s *ApiCore) GenerateSingleFile(table, filename string) error {
 	has, err := tools.PathExists(filename)
 	if err != nil {
 		return err
+	}
+	if !has {
+		if err = tools.MakeDir(s.Filename); err != nil {
+			return err
+		}
 	}
 	fileContent, f, err := tools.RTCFile(filename)
 	if err != nil {
