@@ -30,6 +30,9 @@ func (m *extendJwtBlacklistModel) FindList(ctx context.Context, pageSize, page i
 		if jwtBlacklist.Id > 0 {
 			sq = sq.Where("id = ?", jwtBlacklist.Id)
 		}
+		if jwtBlacklist.AdminerId > 0 {
+			sq = sq.Where("adminer_id = ?", jwtBlacklist.AdminerId)
+		}
 		if jwtBlacklist.Uuid != "" {
 			sq = sq.Where("uuid = ?", jwtBlacklist.Uuid)
 		}

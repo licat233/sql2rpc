@@ -47,6 +47,7 @@ CREATE TABLE `adminer` (
 DROP TABLE IF EXISTS `jwt_blacklist`;
 CREATE TABLE `jwt_blacklist` (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '表主键',
+  `adminer_id` int unsigned NOT NULL COMMENT '管理员表主键',
   `uuid` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户或者管理员的唯一识别码',
   `token` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'jwt-token',
   `platform` varchar(254) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '绑定平台',

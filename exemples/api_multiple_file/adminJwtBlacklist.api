@@ -15,6 +15,7 @@ syntax = "v1"
 //jwt黑名单
 type JwtBlacklist {
   Id int64 `json:"id"`  // 表主键
+  AdminerId int64 `json:"adminerId"`  // 管理员表主键
   Uuid string `json:"uuid"`  // 用户或者管理员的唯一识别码
   Token string `json:"token"`  // jwt-token
   Platform string `json:"platform"`  // 绑定平台
@@ -24,6 +25,7 @@ type JwtBlacklist {
 
 //添加jwt黑名单请求
 type AddJwtBlacklistReq {
+  AdminerId int64 `json:"adminerId"`  // 管理员表主键
   Token string `json:"token"`  // jwt-token
   Platform string `json:"platform"`  // 绑定平台
   Ip string `json:"ip"`  // 绑定ip
@@ -33,6 +35,7 @@ type AddJwtBlacklistReq {
 //更新jwt黑名单请求
 type PutJwtBlacklistReq {
   Id int64 `json:"id"`  // 表主键
+  AdminerId int64 `json:"adminerId"`  // 管理员表主键
   Uuid string `json:"uuid"`  // 用户或者管理员的唯一识别码
   Token string `json:"token"`  // jwt-token
   Platform string `json:"platform"`  // 绑定平台
@@ -57,6 +60,7 @@ type GetJwtBlacklistListReq {
   Current int64 `form:"current,optional,default=1"`  // 当前页码，默认1，用于对接umijs，可选
   Keyword string `form:"keyword,optional"`  // 关键词，可选
   Id int64 `form:"id,optional,default=-1"`  // 表主键
+  AdminerId int64 `form:"adminerId,optional,default=-1"`  // 管理员表主键
   Uuid string `form:"uuid,optional"`  // 用户或者管理员的唯一识别码
   Token string `form:"token,optional"`  // jwt-token
   Platform string `form:"platform,optional"`  // 绑定平台

@@ -36,14 +36,15 @@ type (
 	}
 
 	JwtBlacklist struct {
-		Id       int64     `db:"id"`        // 表主键
-		Uuid     string    `db:"uuid"`      // 用户或者管理员的唯一识别码
-		Token    string    `db:"token"`     // jwt-token
-		Platform string    `db:"platform"`  // 绑定平台
-		Ip       string    `db:"ip"`        // 绑定ip
-		ExpireAt time.Time `db:"expire_at"` // 过期时间
-		CreateAt time.Time `db:"create_at"` // 创建时间
-		UpdateAt time.Time `db:"update_at"` // 更新时间
+		Id        int64     `db:"id"`         // 表主键
+		AdminerId int64     `db:"adminer_id"` // 管理员表主键
+		Uuid      string    `db:"uuid"`       // 用户或者管理员的唯一识别码
+		Token     string    `db:"token"`      // jwt-token
+		Platform  string    `db:"platform"`   // 绑定平台
+		Ip        string    `db:"ip"`         // 绑定ip
+		ExpireAt  time.Time `db:"expire_at"`  // 过期时间
+		CreateAt  time.Time `db:"create_at"`  // 创建时间
+		UpdateAt  time.Time `db:"update_at"`  // 更新时间
 	}
 )
 
@@ -75,14 +76,14 @@ func (m *defaultJwtBlacklistModel) FindOne(ctx context.Context, id int64) (*JwtB
 }
 
 func (m *defaultJwtBlacklistModel) Insert(ctx context.Context, data *JwtBlacklist) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?)", m.table, jwtBlacklistRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Uuid, data.Token, data.Platform, data.Ip, data.ExpireAt)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, jwtBlacklistRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.AdminerId, data.Uuid, data.Token, data.Platform, data.Ip, data.ExpireAt)
 	return ret, err
 }
 
 func (m *defaultJwtBlacklistModel) Update(ctx context.Context, data *JwtBlacklist) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, jwtBlacklistRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, data.Uuid, data.Token, data.Platform, data.Ip, data.ExpireAt, data.Id)
+	_, err := m.conn.ExecCtx(ctx, query, data.AdminerId, data.Uuid, data.Token, data.Platform, data.Ip, data.ExpireAt, data.Id)
 	return err
 }
 

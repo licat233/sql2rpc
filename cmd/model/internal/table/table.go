@@ -158,7 +158,7 @@ func (t *Table) thanString(buf *bytes.Buffer) {
 		var than string
 		//判断是字符串，还是数字
 		tName := convTypeName(c.ColumnType)
-		if tName == "int64" || tName == "int" || tName == "float64" || tName == "float32" {
+		if tName == "number" {
 			than = ">= 0"
 			if isIdColumn(c.ColumnName) {
 				than = "> 0"
@@ -216,6 +216,14 @@ func isIdColumn(name string) bool {
 
 func convTypeName(columnType string) string {
 	typ := strings.ToLower(columnType)
+	if strings.HasPrefix(typ, "int") || strings.HasSuffix(typ, "int") || strings.HasPrefix(typ, "float") {
+		return "number"
+	}
+
+	if strings.HasSuffix(typ, "text") || strings.HasSuffix(typ, "char") {
+		return "string"
+	}
+
 	switch typ {
 	case "char", "varchar", "text", "longtext", "mediumtext", "tinytext":
 		return "string"
