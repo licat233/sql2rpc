@@ -11,21 +11,12 @@ import (
 )
 
 type (
-	adminermodel interface {
+	adminer_model interface {
 		FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error)
-	}
-	extendAdminerModel struct {
-		*defaultAdminerModel
 	}
 )
 
-func newExtendAdminerModelModel(defaultAdminerModel *defaultAdminerModel) *extendAdminerModel {
-	return &extendAdminerModel{
-		defaultAdminerModel,
-	}
-}
-
-func (m *extendAdminerModel) FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error) {
+func (m *defaultAdminerModel) FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error) {
 	hasName := false
 	sq := squirrel.Select(adminerRows).From(m.table)
 	if adminer != nil {

@@ -11,11 +11,11 @@
 set -m
 
 current_path=$(
-    cd $(dirname $0)
+    cd $(dirname $0) || exit
     pwd
 )
 
-cd $current_path
+cd "$current_path" || exit
 
 if [ ! -f "../sql2rpc" ]; then
     ../build.sh
@@ -28,7 +28,8 @@ go mod tidy
 
 ../sql2rpc -model -db_schema="admin" -db_table="*" -dir="model"
 
-if [ $? -ne 0 ]; then
+if ! ../sql2rpc -model -db_schema="admin" -db_table="*" -dir="model";
+then
     exit 1
 fi
 

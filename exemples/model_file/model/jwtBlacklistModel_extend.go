@@ -10,21 +10,12 @@ import (
 )
 
 type (
-	jwtBlacklistmodel interface {
+	jwtBlacklist_model interface {
 		FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error)
-	}
-	extendJwtBlacklistModel struct {
-		*defaultJwtBlacklistModel
 	}
 )
 
-func newExtendJwtBlacklistModelModel(defaultJwtBlacklistModel *defaultJwtBlacklistModel) *extendJwtBlacklistModel {
-	return &extendJwtBlacklistModel{
-		defaultJwtBlacklistModel,
-	}
-}
-
-func (m *extendJwtBlacklistModel) FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error) {
+func (m *defaultJwtBlacklistModel) FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error) {
 	sq := squirrel.Select(jwtBlacklistRows).From(m.table)
 	if jwtBlacklist != nil {
 		if jwtBlacklist.Id > 0 {

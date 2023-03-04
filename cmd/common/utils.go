@@ -8,6 +8,8 @@
 package common
 
 import (
+	"path"
+
 	"github.com/licat233/sql2rpc/config"
 	"github.com/licat233/sql2rpc/tools"
 )
@@ -24,4 +26,8 @@ func ConvertStringStyle(style, name string) string {
 	default:
 		return tools.ToSnake(name)
 	}
+}
+
+func GenFilePath(filename string) string {
+	return path.Join(config.C.Dir.GetString(), filename)
 }

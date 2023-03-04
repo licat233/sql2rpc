@@ -12,6 +12,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"os/user"
@@ -272,4 +273,30 @@ func GetCurrentDirectoryName() (string, error) {
 	}
 	names := strings.Split(dir, "/")
 	return names[len(names)-1], nil
+}
+
+func FindFilename(dir string, file string) (string, error) {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return "", err
+	}
+	for _, fileInfo := range files {
+		if strings.EqualFold(fileInfo.Name(), file) {
+			return fileInfo.Name(), nil
+		}
+	}
+	return "", nil
+}
+
+func FindFile(dir string, file string) (string, error) {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return "", err
+	}
+	for _, fileInfo := range files {
+		if strings.EqualFold(fileInfo.Name(), file) {
+			return filepath.Join(dir, fileInfo.Name()), nil
+		}
+	}
+	return "", nil
 }

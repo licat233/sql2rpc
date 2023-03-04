@@ -11,16 +11,16 @@
 set -m
 
 current_path=$(
-    cd $(dirname $0)
+    cd "$(dirname "$0")" || exit
     pwd
 )
 
-cd ${current_path}
+cd "${current_path}" || exit
 
-chmod +x **/*.sh
+chmod +x ./*glob*.sh
 
-rm -f **/*.api
-rm -f **/*.proto
+rm -f ./*glob*.api
+rm -f ./*glob*.proto
 
 ./build.sh
 ./model_file/gen.sh

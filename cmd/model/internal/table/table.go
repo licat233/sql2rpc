@@ -1,6 +1,7 @@
 package table
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"os"
@@ -8,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/licat233/sql2rpc/cmd/common"
-	"github.com/licat233/sql2rpc/cmd/model/internal/conf"
 	"github.com/licat233/sql2rpc/config"
 	"github.com/licat233/sql2rpc/tools"
 )
@@ -28,20 +28,20 @@ func New(name string, columns []*common.Column) *Table {
 	camelName := tools.ToCamel(name)
 	findList := fmt.Sprintf("FindList(ctx context.Context, pageSize, page int64, keyword string, %s *%s) (resp []*%s, total int64, err error)", lowerName, camelName, camelName)
 	filename := fmt.Sprintf("%sModel_extend.go", lowerName)
-	filename = path.Join(config.C.Dir.GetString(), filename)
+	filename = common.GenFilePath(filename)
 	return &Table{
 		Name:          name,
 		Columns:       columns,
 		HasNameColumn: false,
-		interfaceName: fmt.Sprintf("%smodel", lowerName),
-		strcutName:    fmt.Sprintf("extend%sModel", camelName),
+		interfaceName: fmt.Sprintf("%s_model", lowerName),
+		strcutName:    fmt.Sprintf("default%sModel", camelName),
 		findListName:  findList,
 		fileName:      filename,
 	}
 }
 
 func (t *Table) String() string {
-	camelName := tools.ToCamel(t.Name)
+	// camelName := tools.ToCamel(t.Name)
 	var buf = new(bytes.Buffer)
 	dir := path.Dir(t.fileName)
 	if dir == "." {
@@ -62,21 +62,22 @@ func (t *Table) String() string {
 	buf.WriteString("\ntype (")
 	buf.WriteString(fmt.Sprintf("\n\t%s interface {", t.interfaceName))
 
+	//如果后续有新增的方法，请在此处添加
 	buf.WriteString(fmt.Sprintf("\n\t\t%s", t.findListName))
 
 	buf.WriteString("\n\t}")
-	buf.WriteString(fmt.Sprintf("\n\t%s struct {", t.strcutName))
-	// buf.WriteString("\n\t\tconn  sqlx.SqlConn")
-	// buf.WriteString("\n\t\ttable string")
-	buf.WriteString(fmt.Sprintf("\n\t\t*default%sModel", camelName))
-	buf.WriteString("\n\t}")
+	// buf.WriteString(fmt.Sprintf("\n\t%s struct {", t.strcutName))
+	// // buf.WriteString("\n\t\tconn  sqlx.SqlConn")
+	// // buf.WriteString("\n\t\ttable string")
+	// buf.WriteString(fmt.Sprintf("\n\t\t*default%sModel", camelName))
+	// buf.WriteString("\n\t}")
 	buf.WriteString("\n)\n")
 
-	buf.WriteString(fmt.Sprintf("\nfunc new%sModel(default%sModel *default%sModel) *%s {", tools.ToCamel(t.strcutName), camelName, camelName, t.strcutName))
-	buf.WriteString(fmt.Sprintf("\n\treturn &%s{", t.strcutName))
-	buf.WriteString(fmt.Sprintf("\n\t\tdefault%sModel,", camelName))
-	buf.WriteString("\n}")
-	buf.WriteString("\n}\n")
+	// buf.WriteString(fmt.Sprintf("\nfunc new%sModel(default%sModel *default%sModel) *%s {", tools.ToCamel(t.strcutName), camelName, camelName, t.strcutName))
+	// buf.WriteString(fmt.Sprintf("\n\treturn &%s{", t.strcutName))
+	// buf.WriteString(fmt.Sprintf("\n\t\tdefault%sModel,", camelName))
+	// buf.WriteString("\n}")
+	// buf.WriteString("\n}\n")
 
 	buf.WriteString(t.FindList())
 	return buf.String()
@@ -116,7 +117,10 @@ func (t *Table) GenFile() error {
 	} else {
 		fmt.Println(config.CreatedFileMsg, t.fileName)
 	}
-	return nil
+
+	err = t.InterfaceExtends()
+
+	return err
 }
 
 func (t *Table) FindList() string {
@@ -244,34 +248,65 @@ func convTypeName(columnType string) string {
 	}
 }
 
-func (t *Table) UpdateGoModelFile() error {
-	filename := fmt.Sprintf("%sModel.go", tools.ToLowerCamel(t.Name))
-	has, err := tools.PathExists(filename)
+func (t *Table) InterfaceExtends() error {
+	genFilename := fmt.Sprintf("%sModel_gen.go", tools.ToLowerCamel(t.Name))
+	filePath, err := tools.FindFile(config.C.Dir.GetString(), genFilename)
+	if err != nil {
+		return err
+	}
+	has, err := tools.PathExists(filePath)
 	if err != nil {
 		return err
 	}
 	if !has {
-		return fmt.Errorf("%sModel.go文件不存在，请先使用goctl工具创建", tools.ToLowerCamel(t.Name))
+		return fmt.Errorf("%s 文件不存在，请先使用goctl工具创建", genFilename)
 	}
 
-	fileContent, f, err := tools.RTCFile(filename)
+	// 打开文件以供读取
+	file, err := os.OpenFile(filePath, os.O_RDWR, 0644)
 	if err != nil {
 		return err
 	}
-	defer func(f *os.File) {
-		e := f.Close()
-		if e != nil {
-			err = e
+	defer file.Close()
+
+	table := tools.ToLowerCamel(t.Name)
+	target := fmt.Sprintf("%sModel interface {", table)
+
+	// 使用bufio.Scanner获取文件中每一行的内容
+	scanner := bufio.NewScanner(file)
+
+	// 读取每行内容并进行修改
+	var exist = false
+	var newContent = new(bytes.Buffer)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if exist && strings.HasSuffix(line, t.interfaceName) {
+			//已经存在，不需要修改
+			return nil
 		}
-	}(f)
-	conf.FileContent = fileContent
-	content := t.String()
-	fileContent = common.UpdateMarkContent(config.BaseFuncsStartMark, config.BaseFuncsEndMark, fileContent, content)
-	_, err = f.WriteString(fileContent)
-	if has {
-		fmt.Println(config.UpdatedFileMsg, filename)
-	} else {
-		fmt.Println(config.CreatedFileMsg, filename)
+		if strings.HasSuffix(strings.TrimSpace(line), target) {
+			exist = true
+			line = fmt.Sprintf("%s // extends interface\n\t\t%s", line, t.interfaceName)
+		}
+		newContent.WriteString(line + "\n")
 	}
-	return err
+
+	if err := scanner.Err(); err != nil {
+		fmt.Fprintln(os.Stderr, "reading standard input:", err)
+		return err
+	}
+
+	// 将修改后的内容写回到文件中
+	_, err = file.Seek(0, 0)
+	if err != nil {
+		return err
+	}
+
+	_, err = file.WriteString(newContent.String())
+	if err != nil {
+		fmt.Println("文件写入失败，请检查文件路径是否正确")
+		return err
+	}
+
+	return nil
 }

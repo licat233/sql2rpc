@@ -23,7 +23,8 @@ var (
 )
 
 type (
-	adminerModel interface {
+	adminerModel interface { // extends interface
+		adminer_model
 		Insert(ctx context.Context, data *Adminer) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*Adminer, error)
 		Update(ctx context.Context, data *Adminer) error
