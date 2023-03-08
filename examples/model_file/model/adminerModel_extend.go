@@ -78,3 +78,7 @@ func (m *defaultAdminerModel) FindList(ctx context.Context, pageSize, page int64
 	}
 	return
 }
+
+func (m *defaultAdminerModel) TableName() string {
+	return m.table
+}

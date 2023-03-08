@@ -80,7 +80,9 @@ func (t *Table) String() string {
 	// buf.WriteString("\n}")
 	// buf.WriteString("\n}\n")
 
-	buf.WriteString(t.FindList())
+	buf.WriteString(t.FindListFunc())
+	buf.WriteString(t.TableNameFunc())
+
 	return buf.String()
 }
 
@@ -131,7 +133,7 @@ func (t *Table) GenFile() error {
 	return err
 }
 
-func (t *Table) FindList() string {
+func (t *Table) FindListFunc() string {
 	t.HasNameColumn = t.hasName()
 	camelName := tools.ToCamel(t.Name)
 	lowerName := tools.ToLowerCamel(t.Name)
@@ -158,6 +160,14 @@ func (t *Table) FindList() string {
 	buf.WriteString(fmt.Sprintf("\n\tresp = make([]*%s, 0)", camelName))
 	buf.WriteString("\n\tif err = " + conf.QueryRows + "(ctx, &resp, query, agrs...); err != nil {\n\t\treturn\n\t}")
 	buf.WriteString("\n\treturn")
+	buf.WriteString("\n}\n")
+	return buf.String()
+}
+
+func (t *Table) TableNameFunc() string {
+	var buf = new(bytes.Buffer)
+	buf.WriteString(fmt.Sprintf("\nfunc (m *%s) TableName() string {", t.strcutName))
+	buf.WriteString("\n\treturn m.table")
 	buf.WriteString("\n}\n")
 	return buf.String()
 }

@@ -60,3 +60,7 @@ func (m *defaultJwtBlacklistModel) FindList(ctx context.Context, pageSize, page 
 	}
 	return
 }
+
+func (m *defaultJwtBlacklistModel) TableName() string {
+	return m.table
+}
