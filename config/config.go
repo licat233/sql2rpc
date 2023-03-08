@@ -60,7 +60,8 @@ type Config struct {
 	ApiMultiple   _item.Field
 
 	// model配置
-	Model _item.Field
+	Model      _item.Field
+	ModelCache _item.Field
 }
 
 // 获取一个默认的Config
@@ -89,6 +90,7 @@ func NewDefaultConfig() *Config {
 		ApiPrefix:       _item.NewConfigItem("api_prefix", "", "the api service route prefix, example: api", false),
 		ApiMultiple:     _item.NewConfigItem("api_multiple", false, "Generate multiple api files according to table", false),
 		Model:           _item.NewConfigItem("model", false, "generate extend model .go files", false),
+		ModelCache:      _item.NewConfigItem("model_cache", false, "enable cache", false),
 	}
 }
 
@@ -125,6 +127,7 @@ func (c *Config) Assignment(cmdConfig *Config) *Config {
 		ApiPrefix:       c.ApiPrefix.Init(cmdConfig.ApiPrefix.Value()),
 		ApiMultiple:     c.ApiMultiple.Init(cmdConfig.ApiMultiple.Value()),
 		Model:           c.Model.Init(cmdConfig.Model.Value()),
+		ModelCache:      c.ModelCache.Init(cmdConfig.ModelCache.Value()),
 	}
 }
 

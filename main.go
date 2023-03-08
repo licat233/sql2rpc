@@ -113,6 +113,7 @@ func Initialize() {
 	apiMultiple := flag.Bool(defaultConfig.ApiMultiple.FlagBool())
 	// modelStatus flag
 	modelStatus := flag.Bool(defaultConfig.Model.FlagBool())
+	modelCache := flag.Bool(defaultConfig.ModelCache.FlagBool())
 	flag.Parse()
 
 	*pbStatus = *pbStatus || pbArgStatus
@@ -161,6 +162,7 @@ func Initialize() {
 		ApiPrefix:       defaultConfig.ApiPrefix.Set(*apiPrefix),
 		ApiMultiple:     defaultConfig.ApiMultiple.Set(*apiMultiple),
 		Model:           defaultConfig.Model.Set(*modelStatus),
+		ModelCache:      defaultConfig.ModelCache.Set(*modelCache),
 	}
 
 	config.C = cmdConfig.Assignment(cmdConfig)

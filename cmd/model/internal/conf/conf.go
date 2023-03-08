@@ -13,10 +13,24 @@ var (
 
 	IgnoreTables  = []string{} //当前解析需要忽略的表
 	IgnoreColumns = []string{} //每个结构体需要忽略的列
+
+	QueryRow  = "m.conn.QueryRowCtx"
+	QueryRows = "m.conn.QueryRowsCtx"
 )
 
 // InitConfig It initializes the configuration.
 func InitConfig() {
 	IgnoreTables = append(config.IgnoreTables, baseIgnoreTables...)
 	IgnoreColumns = append(config.IgnoreColumns, baseIgnoreColumns...)
+	ChangeQueryString(config.C.ModelCache.GetBool())
+}
+
+func ChangeQueryString(isCache bool) {
+	if isCache {
+		QueryRow = "m.QueryRowNoCacheCtx"
+		QueryRows = "m.QueryRowsNoCacheCtx"
+	} else {
+		QueryRow = "m.conn.QueryRowCtx"
+		QueryRows = "m.conn.QueryRowsCtx"
+	}
 }

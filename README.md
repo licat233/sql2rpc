@@ -108,7 +108,7 @@ Config.yaml will be created in the current directory
 sql2rpc -init
 ```
 
-A sql2rpcConfig.yaml configuration file will be created. [Sample file](./exemples/sql2rpcConfig.yaml)
+A sql2rpcConfig.yaml configuration file will be created. [Sample file](./examples/sql2rpcConfig.yaml)
 
 ### By configuration file, generate the xxx.proto file and update it
 
@@ -166,9 +166,9 @@ message Person {
 //[custom messages end]
 ```
 
-### Exemples
+### examples
 
-[see](./exemples/)
+[see](./examples/)
 
 ### Thanks
 

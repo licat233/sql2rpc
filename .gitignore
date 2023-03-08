@@ -32,4 +32,4 @@ build/
 test
 push.sh
 
-exemples/sql2rpc
+examples/sql2rpc

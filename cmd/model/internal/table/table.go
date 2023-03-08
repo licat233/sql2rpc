@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/licat233/sql2rpc/cmd/common"
+	"github.com/licat233/sql2rpc/cmd/model/internal/conf"
 	"github.com/licat233/sql2rpc/config"
 	"github.com/licat233/sql2rpc/tools"
 )
@@ -103,6 +104,13 @@ func (t *Table) GenFile() error {
 			err = e
 		}
 	}(f)
+
+	isCache, err := t.IsCacheMode()
+	if err != nil {
+		return err
+	}
+	conf.ChangeQueryString(isCache)
+
 	buf := new(bytes.Buffer)
 
 	content := t.String()
@@ -144,11 +152,11 @@ func (t *Table) FindList() string {
 	buf.WriteString("\n\t\tqueryCount, agrsCount, e := sqCount.ToSql()")
 	buf.WriteString("\n\t\tif e != nil {\n\t\t\terr = e\n\t\t\treturn\n\t\t}")
 	buf.WriteString(fmt.Sprintf("\n\t\tqueryCount = strings.ReplaceAll(queryCount, %sRows, \"COUNT(*)\")", lowerName))
-	buf.WriteString("\n\t\tif err = m.conn.QueryRowCtx(ctx, &total, queryCount, agrsCount...); err != nil {\n\t\t\treturn\n\t\t}")
+	buf.WriteString("\n\t\tif err = " + conf.QueryRow + "(ctx, &total, queryCount, agrsCount...); err != nil {\n\t\t\treturn\n\t\t}")
 	buf.WriteString("\n\t}")
 	buf.WriteString("\n\tquery, agrs, err := sq.ToSql()\n\tif err != nil {\n\t\treturn\n\t}")
 	buf.WriteString(fmt.Sprintf("\n\tresp = make([]*%s, 0)", camelName))
-	buf.WriteString("\n\tif err = m.conn.QueryRowsCtx(ctx, &resp, query, agrs...); err != nil {\n\t\treturn\n\t}")
+	buf.WriteString("\n\tif err = " + conf.QueryRows + "(ctx, &resp, query, agrs...); err != nil {\n\t\treturn\n\t}")
 	buf.WriteString("\n\treturn")
 	buf.WriteString("\n}\n")
 	return buf.String()
@@ -248,22 +256,54 @@ func convTypeName(columnType string) string {
 	}
 }
 
-func (t *Table) InterfaceExtends() error {
+func (t *Table) IsCacheMode() (bool, error) {
 	genFilename := fmt.Sprintf("%sModel_gen.go", tools.ToLowerCamel(t.Name))
 	filePath, err := tools.FindFile(config.C.Dir.GetString(), genFilename)
 	if err != nil {
-		return err
+		return false, err
+	}
+	file, err := os.Open(filePath)
+	if err != nil {
+		return false, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		line = strings.TrimSpace(line)
+		if line == "sqlc.CachedConn" {
+			return true, nil
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return false, err
+	}
+	return false, nil
+}
+
+func (t *Table) OpenGenModelFile() (*os.File, error) {
+	genFilename := fmt.Sprintf("%sModel_gen.go", tools.ToLowerCamel(t.Name))
+	filePath, err := tools.FindFile(config.C.Dir.GetString(), genFilename)
+	if err != nil {
+		return nil, err
 	}
 	has, err := tools.PathExists(filePath)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if !has {
-		return fmt.Errorf("%s 文件不存在，请先使用goctl工具创建", genFilename)
+		return nil, fmt.Errorf("%s 文件不存在，请先使用goctl工具创建", genFilename)
 	}
 
 	// 打开文件以供读取
 	file, err := os.OpenFile(filePath, os.O_RDWR, 0644)
+	return file, err
+}
+
+func (t *Table) InterfaceExtends() error {
+	file, err := t.OpenGenModelFile()
 	if err != nil {
 		return err
 	}
