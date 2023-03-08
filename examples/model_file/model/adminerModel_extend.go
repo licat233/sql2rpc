@@ -13,6 +13,7 @@ import (
 type (
 	adminer_model interface {
 		FindList(ctx context.Context, pageSize, page int64, keyword string, adminer *Adminer) (resp []*Adminer, total int64, err error)
+		TableName() string
 	}
 )
 

@@ -10,7 +10,7 @@ package config
 
 const (
 	// CurrentVersion 当前项目版本
-	CurrentVersion = "v1.5.1"
+	CurrentVersion = "v1.5.2"
 
 	// ProjectName 当前项目名称
 	ProjectName = "sql2rpc"

@@ -12,6 +12,7 @@ import (
 type (
 	jwtBlacklist_model interface {
 		FindList(ctx context.Context, pageSize, page int64, keyword string, jwtBlacklist *JwtBlacklist) (resp []*JwtBlacklist, total int64, err error)
+		TableName() string
 	}
 )
 

@@ -65,6 +65,7 @@ func (t *Table) String() string {
 
 	//如果后续有新增的方法，请在此处添加
 	buf.WriteString(fmt.Sprintf("\n\t\t%s", t.findListName))
+	buf.WriteString("\n\t\tTableName() string")
 
 	buf.WriteString("\n\t}")
 	// buf.WriteString(fmt.Sprintf("\n\t%s struct {", t.strcutName))
